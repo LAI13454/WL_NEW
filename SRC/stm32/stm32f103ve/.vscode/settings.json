@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "stm32f1xx_hal.h": "c",
+        "main.h": "c",
+        "bsp_uart_receive.h": "c",
+        "stm32f1xx_hal_gpio_ex.h": "c",
+        "stm32f1xx_hal_def.h": "c"
+    }
+}

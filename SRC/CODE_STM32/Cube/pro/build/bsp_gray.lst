@@ -1,0 +1,871 @@
+ARM GAS  /tmp/ccFEyKzV.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 2
+   9              		.eabi_attribute 34, 1
+  10              		.eabi_attribute 18, 4
+  11              		.file	"bsp_gray.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.get_gray,"ax",%progbits
+  16              		.align	1
+  17              		.p2align 2,,3
+  18              		.global	get_gray
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	get_gray:
+  25              	.LFB66:
+  26              		.file 1 "Src/bsp_gray.c"
+   1:Src/bsp_gray.c **** #include "bsp_gray.h"
+   2:Src/bsp_gray.c **** 
+   3:Src/bsp_gray.c **** 
+   4:Src/bsp_gray.c **** uint16_t get_gray(uint8_t num){
+  27              		.loc 1 4 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              	.LVL0:
+   5:Src/bsp_gray.c ****   uint16_t gray_data = 0x0000;
+   6:Src/bsp_gray.c ****   switch(num){
+  32              		.loc 1 6 0
+  33 0000 0128     		cmp	r0, #1
+   4:Src/bsp_gray.c ****   uint16_t gray_data = 0x0000;
+  34              		.loc 1 4 0
+  35 0002 38B5     		push	{r3, r4, r5, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 16
+  38              		.cfi_offset 3, -16
+  39              		.cfi_offset 4, -12
+  40              		.cfi_offset 5, -8
+  41              		.cfi_offset 14, -4
+  42              		.loc 1 6 0
+  43 0004 00F00F81 		beq	.L3
+  44 0008 C0F08B80 		bcc	.L4
+  45 000c 0228     		cmp	r0, #2
+  46 000e 40F08680 		bne	.L11
+   7:Src/bsp_gray.c ****     case 0:
+   8:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BRR |= GRAY0_Pin;
+   9:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+  10:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+  11:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ARM GAS  /tmp/ccFEyKzV.s 			page 2
+
+
+  12:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+  13:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  14:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+  15:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  16:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY6_GPIO_Port,GRAY6_Pin);
+  17:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  18:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY7_GPIO_Port,GRAY7_Pin);
+  19:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  20:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY8_GPIO_Port,GRAY8_Pin);
+  21:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  22:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY9_GPIO_Port,GRAY9_Pin);
+  23:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  24:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY10_GPIO_Port,GRAY10_Pin);
+  25:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  26:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+  27:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  28:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BSRR |= GRAY0_Pin;
+  29:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+  30:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+  31:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+  32:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+  33:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  34:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+  35:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  36:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY6_GPIO_Port,GRAY6_Pin);
+  37:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  38:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY7_GPIO_Port,GRAY7_Pin);
+  39:Src/bsp_gray.c ****       break;
+  40:Src/bsp_gray.c ****     case 1:
+  41:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BSRR |= GRAY0_Pin;
+  42:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BSRR |= GRAY1_Pin;
+  43:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+  44:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+  45:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+  46:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  47:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+  48:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  49:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY6_GPIO_Port,GRAY6_Pin);
+  50:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  51:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY7_GPIO_Port,GRAY7_Pin);
+  52:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  53:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY8_GPIO_Port,GRAY8_Pin);
+  54:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  55:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY9_GPIO_Port,GRAY9_Pin);
+  56:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  57:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY10_GPIO_Port,GRAY10_Pin);
+  58:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  59:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+  60:Src/bsp_gray.c ****       break;
+  61:Src/bsp_gray.c ****     case 2:
+  62:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BSRR |= GRAY0_Pin;
+  47              		.loc 1 62 0
+  48 0012 914D     		ldr	r5, .L12
+  63:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+  64:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+  65:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+  66:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY8_GPIO_Port,GRAY8_Pin);
+ARM GAS  /tmp/ccFEyKzV.s 			page 3
+
+
+  49              		.loc 1 66 0
+  50 0014 4FF48051 		mov	r1, #4096
+  62:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+  51              		.loc 1 62 0
+  52 0018 2B69     		ldr	r3, [r5, #16]
+  53              		.loc 1 66 0
+  54 001a 9048     		ldr	r0, .L12+4
+  55              	.LVL1:
+  62:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+  56              		.loc 1 62 0
+  57 001c 43F40073 		orr	r3, r3, #512
+  58 0020 2B61     		str	r3, [r5, #16]
+  63:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+  59              		.loc 1 63 0
+  60 0022 6B69     		ldr	r3, [r5, #20]
+  61 0024 43F48073 		orr	r3, r3, #256
+  62 0028 6B61     		str	r3, [r5, #20]
+  64:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+  63              		.loc 1 64 0
+  64 002a 6B69     		ldr	r3, [r5, #20]
+  65 002c 43F08003 		orr	r3, r3, #128
+  66 0030 6B61     		str	r3, [r5, #20]
+  65:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY8_GPIO_Port,GRAY8_Pin);
+  67              		.loc 1 65 0
+  68 0032 6B69     		ldr	r3, [r5, #20]
+  69 0034 43F04003 		orr	r3, r3, #64
+  70 0038 6B61     		str	r3, [r5, #20]
+  71              		.loc 1 66 0
+  72 003a FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  73              	.LVL2:
+  67:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  68:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY9_GPIO_Port,GRAY9_Pin);
+  74              		.loc 1 68 0
+  75 003e 4FF40061 		mov	r1, #2048
+  67:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  76              		.loc 1 67 0
+  77 0042 4400     		lsls	r4, r0, #1
+  78              		.loc 1 68 0
+  79 0044 8548     		ldr	r0, .L12+4
+  80              	.LVL3:
+  81 0046 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  82              	.LVL4:
+  67:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  83              		.loc 1 67 0
+  84 004a A4B2     		uxth	r4, r4
+  85              	.LVL5:
+  86              		.loc 1 68 0
+  87 004c 0443     		orrs	r4, r4, r0
+  88              	.LVL6:
+  69:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  70:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY10_GPIO_Port,GRAY10_Pin);
+  89              		.loc 1 70 0
+  90 004e 4FF48061 		mov	r1, #1024
+  91 0052 8248     		ldr	r0, .L12+4
+  92 0054 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+  93              	.LVL7:
+  68:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ARM GAS  /tmp/ccFEyKzV.s 			page 4
+
+
+  94              		.loc 1 68 0
+  95 0058 A4B2     		uxth	r4, r4
+  96              	.LVL8:
+  69:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  97              		.loc 1 69 0
+  98 005a 6400     		lsls	r4, r4, #1
+  99              	.LVL9:
+ 100 005c A4B2     		uxth	r4, r4
+ 101              	.LVL10:
+ 102              		.loc 1 70 0
+ 103 005e 0443     		orrs	r4, r4, r0
+ 104              	.LVL11:
+  71:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  72:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+ 105              		.loc 1 72 0
+ 106 0060 4FF40041 		mov	r1, #32768
+ 107 0064 7E48     		ldr	r0, .L12+8
+ 108 0066 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 109              	.LVL12:
+  73:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  74:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BRR |= GRAY0_Pin;
+ 110              		.loc 1 74 0
+ 111 006a 6B69     		ldr	r3, [r5, #20]
+  70:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 112              		.loc 1 70 0
+ 113 006c A4B2     		uxth	r4, r4
+ 114              	.LVL13:
+ 115              		.loc 1 74 0
+ 116 006e 43F40073 		orr	r3, r3, #512
+ 117 0072 6B61     		str	r3, [r5, #20]
+  75:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BSRR |= GRAY1_Pin;
+ 118              		.loc 1 75 0
+ 119 0074 2B69     		ldr	r3, [r5, #16]
+  71:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+ 120              		.loc 1 71 0
+ 121 0076 6400     		lsls	r4, r4, #1
+ 122              	.LVL14:
+ 123              		.loc 1 75 0
+ 124 0078 43F48073 		orr	r3, r3, #256
+ 125 007c 2B61     		str	r3, [r5, #16]
+  76:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+ 126              		.loc 1 76 0
+ 127 007e 6B69     		ldr	r3, [r5, #20]
+  71:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+ 128              		.loc 1 71 0
+ 129 0080 A4B2     		uxth	r4, r4
+ 130              	.LVL15:
+ 131              		.loc 1 76 0
+ 132 0082 43F08003 		orr	r3, r3, #128
+ 133 0086 6B61     		str	r3, [r5, #20]
+  77:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ 134              		.loc 1 77 0
+ 135 0088 6B69     		ldr	r3, [r5, #20]
+  72:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 136              		.loc 1 72 0
+ 137 008a 0443     		orrs	r4, r4, r0
+ 138              	.LVL16:
+ARM GAS  /tmp/ccFEyKzV.s 			page 5
+
+
+ 139              		.loc 1 77 0
+ 140 008c 43F04003 		orr	r3, r3, #64
+  78:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+ 141              		.loc 1 78 0
+ 142 0090 2021     		movs	r1, #32
+ 143 0092 2846     		mov	r0, r5
+  77:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ 144              		.loc 1 77 0
+ 145 0094 6B61     		str	r3, [r5, #20]
+ 146              		.loc 1 78 0
+ 147 0096 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 148              	.LVL17:
+  72:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 149              		.loc 1 72 0
+ 150 009a A4B2     		uxth	r4, r4
+ 151              	.LVL18:
+  73:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BRR |= GRAY0_Pin;
+ 152              		.loc 1 73 0
+ 153 009c 6400     		lsls	r4, r4, #1
+ 154              	.LVL19:
+ 155 009e A4B2     		uxth	r4, r4
+ 156              	.LVL20:
+ 157              		.loc 1 78 0
+ 158 00a0 0443     		orrs	r4, r4, r0
+ 159              	.LVL21:
+  79:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  80:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+ 160              		.loc 1 80 0
+ 161 00a2 1021     		movs	r1, #16
+ 162 00a4 2846     		mov	r0, r5
+  78:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 163              		.loc 1 78 0
+ 164 00a6 A4B2     		uxth	r4, r4
+ 165              	.LVL22:
+  79:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 166              		.loc 1 79 0
+ 167 00a8 6400     		lsls	r4, r4, #1
+ 168              	.LVL23:
+ 169              	.L9:
+ 170              		.loc 1 80 0
+ 171 00aa FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 172              	.LVL24:
+  79:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 173              		.loc 1 79 0
+ 174 00ae A4B2     		uxth	r4, r4
+ 175              	.LVL25:
+ 176              		.loc 1 80 0
+ 177 00b0 0443     		orrs	r4, r4, r0
+ 178              	.LVL26:
+  81:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  82:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY6_GPIO_Port,GRAY6_Pin);
+ 179              		.loc 1 82 0
+ 180 00b2 0821     		movs	r1, #8
+ 181 00b4 2846     		mov	r0, r5
+ 182 00b6 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 183              	.LVL27:
+  80:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ARM GAS  /tmp/ccFEyKzV.s 			page 6
+
+
+ 184              		.loc 1 80 0
+ 185 00ba A4B2     		uxth	r4, r4
+ 186              	.LVL28:
+  81:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 187              		.loc 1 81 0
+ 188 00bc 6400     		lsls	r4, r4, #1
+ 189              	.LVL29:
+ 190 00be A4B2     		uxth	r4, r4
+ 191              	.LVL30:
+ 192              		.loc 1 82 0
+ 193 00c0 0443     		orrs	r4, r4, r0
+ 194              	.LVL31:
+  83:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  84:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY7_GPIO_Port,GRAY7_Pin);
+ 195              		.loc 1 84 0
+ 196 00c2 0421     		movs	r1, #4
+ 197 00c4 6748     		ldr	r0, .L12+12
+ 198 00c6 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 199              	.LVL32:
+  82:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 200              		.loc 1 82 0
+ 201 00ca A4B2     		uxth	r4, r4
+ 202              	.LVL33:
+  83:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 203              		.loc 1 83 0
+ 204 00cc 6400     		lsls	r4, r4, #1
+ 205              	.LVL34:
+ 206 00ce A4B2     		uxth	r4, r4
+ 207              	.LVL35:
+ 208              		.loc 1 84 0
+ 209 00d0 0443     		orrs	r4, r4, r0
+ 210              	.LVL36:
+  85:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  86:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY8_GPIO_Port,GRAY8_Pin);
+ 211              		.loc 1 86 0
+ 212 00d2 4FF48051 		mov	r1, #4096
+ 213 00d6 6148     		ldr	r0, .L12+4
+ 214 00d8 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 215              	.LVL37:
+  84:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 216              		.loc 1 84 0
+ 217 00dc A4B2     		uxth	r4, r4
+ 218              	.LVL38:
+  85:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 219              		.loc 1 85 0
+ 220 00de 6400     		lsls	r4, r4, #1
+ 221              	.LVL39:
+ 222 00e0 A4B2     		uxth	r4, r4
+ 223              	.LVL40:
+ 224              		.loc 1 86 0
+ 225 00e2 0443     		orrs	r4, r4, r0
+ 226              	.LVL41:
+  87:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  88:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY9_GPIO_Port,GRAY9_Pin);
+ 227              		.loc 1 88 0
+ 228 00e4 4FF40061 		mov	r1, #2048
+ 229 00e8 5C48     		ldr	r0, .L12+4
+ARM GAS  /tmp/ccFEyKzV.s 			page 7
+
+
+ 230 00ea FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 231              	.LVL42:
+  86:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 232              		.loc 1 86 0
+ 233 00ee A4B2     		uxth	r4, r4
+ 234              	.LVL43:
+  87:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 235              		.loc 1 87 0
+ 236 00f0 6400     		lsls	r4, r4, #1
+ 237              	.LVL44:
+ 238 00f2 A4B2     		uxth	r4, r4
+ 239              	.LVL45:
+ 240              		.loc 1 88 0
+ 241 00f4 0443     		orrs	r4, r4, r0
+ 242              	.LVL46:
+  89:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  90:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY10_GPIO_Port,GRAY10_Pin);
+ 243              		.loc 1 90 0
+ 244 00f6 4FF48061 		mov	r1, #1024
+ 245 00fa 5848     		ldr	r0, .L12+4
+ 246 00fc FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 247              	.LVL47:
+  88:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 248              		.loc 1 88 0
+ 249 0100 A4B2     		uxth	r4, r4
+ 250              	.LVL48:
+  89:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 251              		.loc 1 89 0
+ 252 0102 6400     		lsls	r4, r4, #1
+ 253              	.LVL49:
+ 254 0104 A4B2     		uxth	r4, r4
+ 255              	.LVL50:
+ 256              		.loc 1 90 0
+ 257 0106 0443     		orrs	r4, r4, r0
+ 258              	.LVL51:
+  91:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+  92:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+ 259              		.loc 1 92 0
+ 260 0108 4FF40041 		mov	r1, #32768
+ 261 010c 5448     		ldr	r0, .L12+8
+ 262 010e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 263              	.LVL52:
+  90:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 264              		.loc 1 90 0
+ 265 0112 A4B2     		uxth	r4, r4
+ 266              	.LVL53:
+  91:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 267              		.loc 1 91 0
+ 268 0114 6400     		lsls	r4, r4, #1
+ 269              	.LVL54:
+ 270 0116 A4B2     		uxth	r4, r4
+ 271              	.LVL55:
+ 272              		.loc 1 92 0
+ 273 0118 2043     		orrs	r0, r0, r4
+ 274 011a 80B2     		uxth	r0, r0
+ 275              	.LVL56:
+  93:Src/bsp_gray.c ****       break;
+ARM GAS  /tmp/ccFEyKzV.s 			page 8
+
+
+  94:Src/bsp_gray.c ****   }
+  95:Src/bsp_gray.c ****   return gray_data;
+  96:Src/bsp_gray.c **** }
+ 276              		.loc 1 96 0
+ 277 011c 38BD     		pop	{r3, r4, r5, pc}
+ 278              	.LVL57:
+ 279              	.L11:
+   5:Src/bsp_gray.c ****   switch(num){
+ 280              		.loc 1 5 0
+ 281 011e 0020     		movs	r0, #0
+ 282              	.LVL58:
+ 283              		.loc 1 96 0
+ 284 0120 38BD     		pop	{r3, r4, r5, pc}
+ 285              	.LVL59:
+ 286              	.L4:
+   8:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+ 287              		.loc 1 8 0
+ 288 0122 4D4D     		ldr	r5, .L12
+  12:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 289              		.loc 1 12 0
+ 290 0124 2021     		movs	r1, #32
+   8:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+ 291              		.loc 1 8 0
+ 292 0126 6B69     		ldr	r3, [r5, #20]
+  12:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 293              		.loc 1 12 0
+ 294 0128 2846     		mov	r0, r5
+ 295              	.LVL60:
+   8:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+ 296              		.loc 1 8 0
+ 297 012a 43F40073 		orr	r3, r3, #512
+ 298 012e 6B61     		str	r3, [r5, #20]
+   9:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+ 299              		.loc 1 9 0
+ 300 0130 6B69     		ldr	r3, [r5, #20]
+ 301 0132 43F48073 		orr	r3, r3, #256
+ 302 0136 6B61     		str	r3, [r5, #20]
+  10:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ 303              		.loc 1 10 0
+ 304 0138 6B69     		ldr	r3, [r5, #20]
+ 305 013a 43F08003 		orr	r3, r3, #128
+ 306 013e 6B61     		str	r3, [r5, #20]
+  11:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+ 307              		.loc 1 11 0
+ 308 0140 6B69     		ldr	r3, [r5, #20]
+ 309 0142 43F04003 		orr	r3, r3, #64
+ 310 0146 6B61     		str	r3, [r5, #20]
+  12:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 311              		.loc 1 12 0
+ 312 0148 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 313              	.LVL61:
+  14:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 314              		.loc 1 14 0
+ 315 014c 1021     		movs	r1, #16
+  13:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+ 316              		.loc 1 13 0
+ 317 014e 4400     		lsls	r4, r0, #1
+ARM GAS  /tmp/ccFEyKzV.s 			page 9
+
+
+  14:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 318              		.loc 1 14 0
+ 319 0150 2846     		mov	r0, r5
+ 320              	.LVL62:
+ 321 0152 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 322              	.LVL63:
+  13:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+ 323              		.loc 1 13 0
+ 324 0156 A4B2     		uxth	r4, r4
+ 325              	.LVL64:
+  14:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 326              		.loc 1 14 0
+ 327 0158 0443     		orrs	r4, r4, r0
+ 328              	.LVL65:
+  16:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 329              		.loc 1 16 0
+ 330 015a 0821     		movs	r1, #8
+ 331 015c 2846     		mov	r0, r5
+ 332 015e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 333              	.LVL66:
+  14:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 334              		.loc 1 14 0
+ 335 0162 A4B2     		uxth	r4, r4
+ 336              	.LVL67:
+  15:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY6_GPIO_Port,GRAY6_Pin);
+ 337              		.loc 1 15 0
+ 338 0164 6400     		lsls	r4, r4, #1
+ 339              	.LVL68:
+ 340 0166 A4B2     		uxth	r4, r4
+ 341              	.LVL69:
+  16:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 342              		.loc 1 16 0
+ 343 0168 0443     		orrs	r4, r4, r0
+ 344              	.LVL70:
+  18:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 345              		.loc 1 18 0
+ 346 016a 0421     		movs	r1, #4
+ 347 016c 3D48     		ldr	r0, .L12+12
+ 348 016e FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 349              	.LVL71:
+  16:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 350              		.loc 1 16 0
+ 351 0172 A4B2     		uxth	r4, r4
+ 352              	.LVL72:
+  17:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY7_GPIO_Port,GRAY7_Pin);
+ 353              		.loc 1 17 0
+ 354 0174 6400     		lsls	r4, r4, #1
+ 355              	.LVL73:
+ 356 0176 A4B2     		uxth	r4, r4
+ 357              	.LVL74:
+  18:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 358              		.loc 1 18 0
+ 359 0178 0443     		orrs	r4, r4, r0
+ 360              	.LVL75:
+  20:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 361              		.loc 1 20 0
+ 362 017a 4FF48051 		mov	r1, #4096
+ARM GAS  /tmp/ccFEyKzV.s 			page 10
+
+
+ 363 017e 3748     		ldr	r0, .L12+4
+ 364 0180 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 365              	.LVL76:
+  18:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 366              		.loc 1 18 0
+ 367 0184 A4B2     		uxth	r4, r4
+ 368              	.LVL77:
+  19:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY8_GPIO_Port,GRAY8_Pin);
+ 369              		.loc 1 19 0
+ 370 0186 6400     		lsls	r4, r4, #1
+ 371              	.LVL78:
+ 372 0188 A4B2     		uxth	r4, r4
+ 373              	.LVL79:
+  20:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 374              		.loc 1 20 0
+ 375 018a 0443     		orrs	r4, r4, r0
+ 376              	.LVL80:
+  22:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 377              		.loc 1 22 0
+ 378 018c 4FF40061 		mov	r1, #2048
+ 379 0190 3248     		ldr	r0, .L12+4
+ 380 0192 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 381              	.LVL81:
+  20:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 382              		.loc 1 20 0
+ 383 0196 A4B2     		uxth	r4, r4
+ 384              	.LVL82:
+  21:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY9_GPIO_Port,GRAY9_Pin);
+ 385              		.loc 1 21 0
+ 386 0198 6400     		lsls	r4, r4, #1
+ 387              	.LVL83:
+ 388 019a A4B2     		uxth	r4, r4
+ 389              	.LVL84:
+  22:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 390              		.loc 1 22 0
+ 391 019c 0443     		orrs	r4, r4, r0
+ 392              	.LVL85:
+  24:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 393              		.loc 1 24 0
+ 394 019e 4FF48061 		mov	r1, #1024
+ 395 01a2 2E48     		ldr	r0, .L12+4
+ 396 01a4 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 397              	.LVL86:
+  22:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 398              		.loc 1 22 0
+ 399 01a8 A4B2     		uxth	r4, r4
+ 400              	.LVL87:
+  23:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY10_GPIO_Port,GRAY10_Pin);
+ 401              		.loc 1 23 0
+ 402 01aa 6400     		lsls	r4, r4, #1
+ 403              	.LVL88:
+ 404 01ac A4B2     		uxth	r4, r4
+ 405              	.LVL89:
+  24:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 406              		.loc 1 24 0
+ 407 01ae 0443     		orrs	r4, r4, r0
+ 408              	.LVL90:
+ARM GAS  /tmp/ccFEyKzV.s 			page 11
+
+
+  26:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 409              		.loc 1 26 0
+ 410 01b0 4FF40041 		mov	r1, #32768
+ 411 01b4 2A48     		ldr	r0, .L12+8
+ 412 01b6 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 413              	.LVL91:
+  28:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+ 414              		.loc 1 28 0
+ 415 01ba 2B69     		ldr	r3, [r5, #16]
+  24:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 416              		.loc 1 24 0
+ 417 01bc A4B2     		uxth	r4, r4
+ 418              	.LVL92:
+  28:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BRR |= GRAY1_Pin;
+ 419              		.loc 1 28 0
+ 420 01be 43F40073 		orr	r3, r3, #512
+ 421 01c2 2B61     		str	r3, [r5, #16]
+  29:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+ 422              		.loc 1 29 0
+ 423 01c4 6B69     		ldr	r3, [r5, #20]
+  25:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+ 424              		.loc 1 25 0
+ 425 01c6 6400     		lsls	r4, r4, #1
+ 426              	.LVL93:
+  29:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+ 427              		.loc 1 29 0
+ 428 01c8 43F48073 		orr	r3, r3, #256
+ 429 01cc 6B61     		str	r3, [r5, #20]
+  30:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ 430              		.loc 1 30 0
+ 431 01ce 6B69     		ldr	r3, [r5, #20]
+  25:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY11_GPIO_Port,GRAY11_Pin);
+ 432              		.loc 1 25 0
+ 433 01d0 A4B2     		uxth	r4, r4
+ 434              	.LVL94:
+  30:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ 435              		.loc 1 30 0
+ 436 01d2 43F08003 		orr	r3, r3, #128
+ 437 01d6 6B61     		str	r3, [r5, #20]
+  31:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+ 438              		.loc 1 31 0
+ 439 01d8 6B69     		ldr	r3, [r5, #20]
+  26:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 440              		.loc 1 26 0
+ 441 01da 0443     		orrs	r4, r4, r0
+ 442              	.LVL95:
+  31:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+ 443              		.loc 1 31 0
+ 444 01dc 43F04003 		orr	r3, r3, #64
+ 445 01e0 6B61     		str	r3, [r5, #20]
+  32:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 446              		.loc 1 32 0
+ 447 01e2 2846     		mov	r0, r5
+ 448 01e4 2021     		movs	r1, #32
+ 449 01e6 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 450              	.LVL96:
+  26:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ARM GAS  /tmp/ccFEyKzV.s 			page 12
+
+
+ 451              		.loc 1 26 0
+ 452 01ea A4B2     		uxth	r4, r4
+ 453              	.LVL97:
+  27:Src/bsp_gray.c ****       GRAY0_GPIO_Port->BSRR |= GRAY0_Pin;
+ 454              		.loc 1 27 0
+ 455 01ec 6400     		lsls	r4, r4, #1
+ 456              	.LVL98:
+ 457 01ee A4B2     		uxth	r4, r4
+ 458              	.LVL99:
+  32:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 459              		.loc 1 32 0
+ 460 01f0 0443     		orrs	r4, r4, r0
+ 461              	.LVL100:
+  34:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 462              		.loc 1 34 0
+ 463 01f2 1021     		movs	r1, #16
+ 464 01f4 2846     		mov	r0, r5
+ 465 01f6 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 466              	.LVL101:
+  32:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 467              		.loc 1 32 0
+ 468 01fa A4B2     		uxth	r4, r4
+ 469              	.LVL102:
+  33:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+ 470              		.loc 1 33 0
+ 471 01fc 6400     		lsls	r4, r4, #1
+ 472              	.LVL103:
+ 473 01fe A4B2     		uxth	r4, r4
+ 474              	.LVL104:
+  34:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 475              		.loc 1 34 0
+ 476 0200 0443     		orrs	r4, r4, r0
+ 477              	.LVL105:
+  36:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 478              		.loc 1 36 0
+ 479 0202 0821     		movs	r1, #8
+ 480 0204 2846     		mov	r0, r5
+ 481 0206 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 482              	.LVL106:
+  34:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 483              		.loc 1 34 0
+ 484 020a A4B2     		uxth	r4, r4
+ 485              	.LVL107:
+  35:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY6_GPIO_Port,GRAY6_Pin);
+ 486              		.loc 1 35 0
+ 487 020c 6400     		lsls	r4, r4, #1
+ 488              	.LVL108:
+ 489 020e A4B2     		uxth	r4, r4
+ 490              	.LVL109:
+  36:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 491              		.loc 1 36 0
+ 492 0210 0443     		orrs	r4, r4, r0
+ 493              	.LVL110:
+  38:Src/bsp_gray.c ****       break;
+ 494              		.loc 1 38 0
+ 495 0212 0421     		movs	r1, #4
+ 496 0214 1348     		ldr	r0, .L12+12
+ARM GAS  /tmp/ccFEyKzV.s 			page 13
+
+
+ 497 0216 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 498              	.LVL111:
+  36:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 499              		.loc 1 36 0
+ 500 021a A4B2     		uxth	r4, r4
+ 501              	.LVL112:
+  37:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY7_GPIO_Port,GRAY7_Pin);
+ 502              		.loc 1 37 0
+ 503 021c 6400     		lsls	r4, r4, #1
+ 504              	.LVL113:
+ 505 021e A4B2     		uxth	r4, r4
+ 506              	.LVL114:
+  38:Src/bsp_gray.c ****       break;
+ 507              		.loc 1 38 0
+ 508 0220 2043     		orrs	r0, r0, r4
+ 509 0222 80B2     		uxth	r0, r0
+ 510              	.LVL115:
+ 511              		.loc 1 96 0
+ 512 0224 38BD     		pop	{r3, r4, r5, pc}
+ 513              	.LVL116:
+ 514              	.L3:
+  41:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BSRR |= GRAY1_Pin;
+ 515              		.loc 1 41 0
+ 516 0226 0C4D     		ldr	r5, .L12
+  45:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 517              		.loc 1 45 0
+ 518 0228 2021     		movs	r1, #32
+  41:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BSRR |= GRAY1_Pin;
+ 519              		.loc 1 41 0
+ 520 022a 2B69     		ldr	r3, [r5, #16]
+  45:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 521              		.loc 1 45 0
+ 522 022c 2846     		mov	r0, r5
+ 523              	.LVL117:
+  41:Src/bsp_gray.c ****       GRAY1_GPIO_Port->BSRR |= GRAY1_Pin;
+ 524              		.loc 1 41 0
+ 525 022e 43F40073 		orr	r3, r3, #512
+ 526 0232 2B61     		str	r3, [r5, #16]
+  42:Src/bsp_gray.c ****       GRAY2_GPIO_Port->BRR |= GRAY2_Pin;
+ 527              		.loc 1 42 0
+ 528 0234 2B69     		ldr	r3, [r5, #16]
+ 529 0236 43F48073 		orr	r3, r3, #256
+ 530 023a 2B61     		str	r3, [r5, #16]
+  43:Src/bsp_gray.c ****       GRAY3_GPIO_Port->BRR |= GRAY3_Pin;
+ 531              		.loc 1 43 0
+ 532 023c 6B69     		ldr	r3, [r5, #20]
+ 533 023e 43F08003 		orr	r3, r3, #128
+ 534 0242 6B61     		str	r3, [r5, #20]
+  44:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY4_GPIO_Port,GRAY4_Pin);
+ 535              		.loc 1 44 0
+ 536 0244 6B69     		ldr	r3, [r5, #20]
+ 537 0246 43F04003 		orr	r3, r3, #64
+ 538 024a 6B61     		str	r3, [r5, #20]
+  45:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 539              		.loc 1 45 0
+ 540 024c FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 541              	.LVL118:
+ARM GAS  /tmp/ccFEyKzV.s 			page 14
+
+
+  47:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 542              		.loc 1 47 0
+ 543 0250 1021     		movs	r1, #16
+  46:Src/bsp_gray.c ****       gray_data |= HAL_GPIO_ReadPin(GRAY5_GPIO_Port,GRAY5_Pin);
+ 544              		.loc 1 46 0
+ 545 0252 4400     		lsls	r4, r0, #1
+  47:Src/bsp_gray.c ****       gray_data = gray_data << 1;
+ 546              		.loc 1 47 0
+ 547 0254 2846     		mov	r0, r5
+ 548              	.LVL119:
+ 549 0256 28E7     		b	.L9
+ 550              	.L13:
+ 551              		.align	2
+ 552              	.L12:
+ 553 0258 000C0140 		.word	1073810432
+ 554 025c 00100140 		.word	1073811456
+ 555 0260 00080140 		.word	1073809408
+ 556 0264 00140140 		.word	1073812480
+ 557              		.cfi_endproc
+ 558              	.LFE66:
+ 560              		.section	.text.get_other,"ax",%progbits
+ 561              		.align	1
+ 562              		.p2align 2,,3
+ 563              		.global	get_other
+ 564              		.syntax unified
+ 565              		.thumb
+ 566              		.thumb_func
+ 567              		.fpu softvfp
+ 569              	get_other:
+ 570              	.LFB67:
+  97:Src/bsp_gray.c **** 
+  98:Src/bsp_gray.c **** uint16_t get_other(void){
+ 571              		.loc 1 98 0
+ 572              		.cfi_startproc
+ 573              		@ args = 0, pretend = 0, frame = 0
+ 574              		@ frame_needed = 0, uses_anonymous_args = 0
+ 575              	.LVL120:
+ 576 0000 08B5     		push	{r3, lr}
+ 577              	.LCFI1:
+ 578              		.cfi_def_cfa_offset 8
+ 579              		.cfi_offset 3, -8
+ 580              		.cfi_offset 14, -4
+  99:Src/bsp_gray.c ****   uint16_t other_data = 0x0000;
+ 100:Src/bsp_gray.c ****   other_data |= HAL_GPIO_ReadPin(RED_GPIO_Port,RED_Pin);
+ 581              		.loc 1 100 0
+ 582 0002 0221     		movs	r1, #2
+ 583 0004 0148     		ldr	r0, .L16
+ 584 0006 FFF7FEFF 		bl	HAL_GPIO_ReadPin
+ 585              	.LVL121:
+ 101:Src/bsp_gray.c ****   return other_data;
+ 102:Src/bsp_gray.c **** }
+ 586              		.loc 1 102 0
+ 587 000a 08BD     		pop	{r3, pc}
+ 588              	.L17:
+ 589              		.align	2
+ 590              	.L16:
+ 591 000c 00100140 		.word	1073811456
+ARM GAS  /tmp/ccFEyKzV.s 			page 15
+
+
+ 592              		.cfi_endproc
+ 593              	.LFE67:
+ 595              		.text
+ 596              	.Letext0:
+ 597              		.file 2 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/machine/_default_type
+ 598              		.file 3 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 599              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 600              		.file 5 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 601              		.file 6 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 602              		.file 7 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/lock.h"
+ 603              		.file 8 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/_types.h"
+ 604              		.file 9 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1/include/stddef.
+ 605              		.file 10 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/reent.h"
+ 606              		.file 11 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ARM GAS  /tmp/ccFEyKzV.s 			page 16
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 bsp_gray.c
+     /tmp/ccFEyKzV.s:16     .text.get_gray:0000000000000000 $t
+     /tmp/ccFEyKzV.s:24     .text.get_gray:0000000000000000 get_gray
+     /tmp/ccFEyKzV.s:553    .text.get_gray:0000000000000258 $d
+     /tmp/ccFEyKzV.s:561    .text.get_other:0000000000000000 $t
+     /tmp/ccFEyKzV.s:569    .text.get_other:0000000000000000 get_other
+     /tmp/ccFEyKzV.s:591    .text.get_other:000000000000000c $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_ReadPin
