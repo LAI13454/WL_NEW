@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccZ9uWVr.s 			page 1
+ARM GAS  /tmp/cc7UAIOT.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
   30:Src/stm32f1xx_it.c ****   *
   31:Src/stm32f1xx_it.c ****   ******************************************************************************
   32:Src/stm32f1xx_it.c ****   */
-ARM GAS  /tmp/ccZ9uWVr.s 			page 2
+ARM GAS  /tmp/cc7UAIOT.s 			page 2
 
 
   33:Src/stm32f1xx_it.c **** /* Includes ------------------------------------------------------------------*/
@@ -118,7 +118,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
   49              		.cfi_startproc
   50              		@ Volatile: function does not return.
   51              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/ccZ9uWVr.s 			page 3
+ARM GAS  /tmp/cc7UAIOT.s 			page 3
 
 
   52              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -178,7 +178,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
   85:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
   86:Src/stm32f1xx_it.c **** 
   87:Src/stm32f1xx_it.c ****   /* USER CODE END MemoryManagement_IRQn 0 */
-ARM GAS  /tmp/ccZ9uWVr.s 			page 4
+ARM GAS  /tmp/cc7UAIOT.s 			page 4
 
 
   88:Src/stm32f1xx_it.c ****   while (1)
@@ -238,7 +238,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
  115              		.cfi_startproc
  116              		@ Volatile: function does not return.
  117              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  /tmp/ccZ9uWVr.s 			page 5
+ARM GAS  /tmp/cc7UAIOT.s 			page 5
 
 
  118              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -298,7 +298,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
  178 0000 7047     		bx	lr
  179              		.cfi_endproc
  180              	.LFE81:
-ARM GAS  /tmp/ccZ9uWVr.s 			page 6
+ARM GAS  /tmp/cc7UAIOT.s 			page 6
 
 
  182 0002 00BF     		.section	.text.SysTick_Handler,"ax",%progbits
@@ -358,7 +358,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
  165:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN PendSV_IRQn 0 */
  166:Src/stm32f1xx_it.c **** 
  167:Src/stm32f1xx_it.c ****   /* USER CODE END PendSV_IRQn 0 */
-ARM GAS  /tmp/ccZ9uWVr.s 			page 7
+ARM GAS  /tmp/cc7UAIOT.s 			page 7
 
 
  168:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN PendSV_IRQn 1 */
@@ -418,7 +418,7 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
  187:Src/stm32f1xx_it.c **** 
  188:Src/stm32f1xx_it.c **** /******************************************************************************/
  189:Src/stm32f1xx_it.c **** /* STM32F1xx Peripheral Interrupt Handlers                                    */
-ARM GAS  /tmp/ccZ9uWVr.s 			page 8
+ARM GAS  /tmp/cc7UAIOT.s 			page 8
 
 
  190:Src/stm32f1xx_it.c **** /* Add here the Interrupt Handlers for the used peripherals.                  */
@@ -429,726 +429,1329 @@ ARM GAS  /tmp/ccZ9uWVr.s 			page 1
  195:Src/stm32f1xx_it.c **** /**
  196:Src/stm32f1xx_it.c **** * @brief This function handles SPI2 global interrupt.
  197:Src/stm32f1xx_it.c **** */
- 198:Src/stm32f1xx_it.c **** void SPI2_IRQHandler(void)
- 199:Src/stm32f1xx_it.c **** {
- 229              		.loc 1 199 0
+ 198:Src/stm32f1xx_it.c **** static uint8_t count =0;
+ 199:Src/stm32f1xx_it.c **** void SPI2_IRQHandler(void)
+ 200:Src/stm32f1xx_it.c **** {
+ 229              		.loc 1 200 0
  230              		.cfi_startproc
  231              		@ args = 0, pretend = 0, frame = 0
  232              		@ frame_needed = 0, uses_anonymous_args = 0
+ 233              		@ link register save eliminated.
+ 234              	.LVL2:
+ 201:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN SPI2_IRQn 0 */
+ 202:Src/stm32f1xx_it.c ****   extern uint16_t gray_data_final;
+ 203:Src/stm32f1xx_it.c ****   extern uint16_t gray_data_two_final;
+ 204:Src/stm32f1xx_it.c ****   extern uint16_t other_data_final;
+ 205:Src/stm32f1xx_it.c ****   uint8_t other_status_final = 0x11;
+ 206:Src/stm32f1xx_it.c ****   static bool start=false;
+ 207:Src/stm32f1xx_it.c ****   static uint8_t data_use_r = 0x00;    //接受执行返回
+ 208:Src/stm32f1xx_it.c ****   static uint8_t buf[5] = {0};
+ 209:Src/stm32f1xx_it.c ****   static uint8_t tx_buf[2] = {0x01,0x02};
+ 210:Src/stm32f1xx_it.c ****   
+ 211:Src/stm32f1xx_it.c ****   if((SPI2->DR == 0xaa) && (start == false)){     //收到头0xaa
+ 235              		.loc 1 211 0
+ 236 0000 A04A     		ldr	r2, .L70
+ 237 0002 A148     		ldr	r0, .L70+4
+ 238 0004 D168     		ldr	r1, [r2, #12]
  200:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN SPI2_IRQn 0 */
- 201:Src/stm32f1xx_it.c ****   extern uint16_t gray_data_final;
- 202:Src/stm32f1xx_it.c ****   extern uint16_t gray_data_two_final;
- 203:Src/stm32f1xx_it.c ****   extern uint16_t other_data_final;
- 204:Src/stm32f1xx_it.c ****   
- 205:Src/stm32f1xx_it.c ****   static bool start=false;
- 206:Src/stm32f1xx_it.c ****   static uint8_t buf[5] = {0};
- 207:Src/stm32f1xx_it.c ****   static uint8_t count =0;
- 208:Src/stm32f1xx_it.c ****   if((SPI2->DR == 0xaa) && (start == false))
- 233              		.loc 1 208 0
- 234 0000 804A     		ldr	r2, .L66
- 199:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN SPI2_IRQn 0 */
- 235              		.loc 1 199 0
- 236 0002 38B5     		push	{r3, r4, r5, lr}
- 237              	.LCFI2:
- 238              		.cfi_def_cfa_offset 16
- 239              		.cfi_offset 3, -16
- 240              		.cfi_offset 4, -12
- 241              		.cfi_offset 5, -8
- 242              		.cfi_offset 14, -4
- 243              		.loc 1 208 0
- 244 0004 D368     		ldr	r3, [r2, #12]
- 245 0006 8048     		ldr	r0, .L66+4
- 246 0008 AA2B     		cmp	r3, #170
- 247 000a 54D0     		beq	.L48
- 248              	.L17:
- 209:Src/stm32f1xx_it.c ****   {
- 210:Src/stm32f1xx_it.c ****     start = true;
- 211:Src/stm32f1xx_it.c ****     count = 0;
- 212:Src/stm32f1xx_it.c ****   }
- 213:Src/stm32f1xx_it.c ****   if((count >= 1)&&(count <= 3))
- 249              		.loc 1 213 0
- 250 000c 7F4C     		ldr	r4, .L66+8
- 251 000e 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
- 252 0010 5A1E     		subs	r2, r3, #1
- 253 0012 022A     		cmp	r2, #2
- 254 0014 5DD8     		bhi	.L20
- 214:Src/stm32f1xx_it.c ****   {
- 215:Src/stm32f1xx_it.c ****     buf[count-1] = SPI2->DR;
- 255              		.loc 1 215 0
- 256 0016 7B4A     		ldr	r2, .L66
- 257 0018 7D4D     		ldr	r5, .L66+12
- 258 001a D168     		ldr	r1, [r2, #12]
-ARM GAS  /tmp/ccZ9uWVr.s 			page 9
+ 239              		.loc 1 200 0
+ 240 0006 F0B4     		push	{r4, r5, r6, r7}
+ 241              	.LCFI2:
+ 242              		.cfi_def_cfa_offset 16
+ 243              		.cfi_offset 4, -16
+ 244              		.cfi_offset 5, -12
+ 245              		.cfi_offset 6, -8
+ 246              		.cfi_offset 7, -4
+ 247              		.loc 1 211 0
+ 248 0008 AA29     		cmp	r1, #170
+ 249 000a 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
+ 250 000c 41D0     		beq	.L57
+ 251              	.L17:
+ 212:Src/stm32f1xx_it.c ****     start = true;
+ 213:Src/stm32f1xx_it.c ****     count ++;
+ 214:Src/stm32f1xx_it.c ****     SPI2->DR = other_status_final;                              //可替换成程序运行开关状
+ 215:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 1)){      //收到控制位，代表后两位要发的东�
+ 252              		.loc 1 215 0
+ 253 000e 012B     		cmp	r3, #1
+ 254 0010 50D0     		beq	.L58
+ 255 0012 9E4B     		ldr	r3, .L70+8
+ 256 0014 9E4E     		ldr	r6, .L70+12
+ 257 0016 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 258              	.L25:
+ARM GAS  /tmp/cc7UAIOT.s 			page 9
 
 
- 259 001c EA18     		adds	r2, r5, r3
- 260 001e 02F8011C 		strb	r1, [r2, #-1]
- 261              	.L21:
- 216:Src/stm32f1xx_it.c ****   }
- 217:Src/stm32f1xx_it.c ****   else if(count == 4)
- 218:Src/stm32f1xx_it.c ****   {
- 219:Src/stm32f1xx_it.c ****     SPI2->DR = 0;
- 220:Src/stm32f1xx_it.c ****   }
- 221:Src/stm32f1xx_it.c ****   else if(count == 5)
- 222:Src/stm32f1xx_it.c ****   {
- 223:Src/stm32f1xx_it.c ****     SPI2->DR = 0;
- 224:Src/stm32f1xx_it.c ****   }
- 225:Src/stm32f1xx_it.c ****   else
- 226:Src/stm32f1xx_it.c ****   {
- 227:Src/stm32f1xx_it.c ****     if(SPI2->DR == 0x55)
- 228:Src/stm32f1xx_it.c ****     {
- 229:Src/stm32f1xx_it.c ****       count = 0;
- 230:Src/stm32f1xx_it.c ****       start = false;
- 231:Src/stm32f1xx_it.c ****     }
- 232:Src/stm32f1xx_it.c ****   }
- 233:Src/stm32f1xx_it.c ****   if(start == true)
- 262              		.loc 1 233 0
- 263 0022 0278     		ldrb	r2, [r0]	@ zero_extendqisi2
- 264 0024 012A     		cmp	r2, #1
- 265 0026 51D0     		beq	.L19
- 266              	.L24:
- 234:Src/stm32f1xx_it.c ****     count ++;
- 235:Src/stm32f1xx_it.c ****   /* USER CODE END SPI2_IRQn 0 */
- 236:Src/stm32f1xx_it.c ****   HAL_SPI_IRQHandler(&hspi2);
- 267              		.loc 1 236 0
- 268 0028 7A48     		ldr	r0, .L66+16
- 269 002a FFF7FEFF 		bl	HAL_SPI_IRQHandler
- 270              	.LVL2:
- 237:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN SPI2_IRQn 1 */
- 238:Src/stm32f1xx_it.c ****   if(buf[0] == 0x01){
- 271              		.loc 1 238 0
- 272 002e 2B78     		ldrb	r3, [r5]	@ zero_extendqisi2
- 273 0030 012B     		cmp	r3, #1
- 274 0032 34D0     		beq	.L51
- 239:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 240:Src/stm32f1xx_it.c ****     if(temp >= 0){
- 241:Src/stm32f1xx_it.c ****       TIM1->CCR3 = temp;
- 242:Src/stm32f1xx_it.c ****       TIM1->CCR4 = 0;
- 243:Src/stm32f1xx_it.c ****     }else{
- 244:Src/stm32f1xx_it.c ****       TIM1->CCR3 = 0;
- 245:Src/stm32f1xx_it.c ****       TIM1->CCR4 = -temp;
- 246:Src/stm32f1xx_it.c ****     }
- 247:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x02){
- 275              		.loc 1 247 0
- 276 0034 022B     		cmp	r3, #2
- 277 0036 26D0     		beq	.L52
- 248:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 249:Src/stm32f1xx_it.c ****     if(temp >= 0){
- 250:Src/stm32f1xx_it.c ****       TIM1->CCR1 = temp;
- 251:Src/stm32f1xx_it.c ****       TIM1->CCR2 = 0;
- 252:Src/stm32f1xx_it.c ****     }else{
- 253:Src/stm32f1xx_it.c ****       TIM1->CCR1 = 0;
-ARM GAS  /tmp/ccZ9uWVr.s 			page 10
+ 216:Src/stm32f1xx_it.c ****     buf[0] = SPI2->DR;
+ 217:Src/stm32f1xx_it.c ****     SPI2->DR = other_status_final;
+ 218:Src/stm32f1xx_it.c ****     count ++;
+ 219:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 2)){      //收到高8位，发送控制位
+ 220:Src/stm32f1xx_it.c ****     buf[1] = SPI2->DR;
+ 221:Src/stm32f1xx_it.c ****     SPI2->DR = buf[0];
+ 222:Src/stm32f1xx_it.c ****     count ++;
+ 223:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 3)){      //收到低8位，发送数据位
+ 224:Src/stm32f1xx_it.c ****     buf[2] = SPI2->DR;
+ 225:Src/stm32f1xx_it.c ****     SPI2->DR = tx_buf[0];
+ 226:Src/stm32f1xx_it.c ****     count ++;
+ 227:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 4)){      //发送数据位
+ 228:Src/stm32f1xx_it.c ****     SPI2->DR = tx_buf[1];
+ 229:Src/stm32f1xx_it.c ****     count ++;
+ 230:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 5)){      //发送数据校验
+ 231:Src/stm32f1xx_it.c ****     SPI2->DR = (tx_buf[0] + tx_buf[1]) & 0xff;
+ 232:Src/stm32f1xx_it.c ****     count ++;
+ 233:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 6)){      //发送数据使用情况
+ 234:Src/stm32f1xx_it.c ****     buf[3] = SPI2->DR;
+ 235:Src/stm32f1xx_it.c ****     SPI2->DR = data_use_r;
+ 236:Src/stm32f1xx_it.c ****     count ++;
+ 237:Src/stm32f1xx_it.c ****   }else{
+ 238:Src/stm32f1xx_it.c ****     count = 0;
+ 259              		.loc 1 238 0
+ 260 0018 0025     		movs	r5, #0
+ 261 001a 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 239:Src/stm32f1xx_it.c ****     start = false;
+ 262              		.loc 1 239 0
+ 263 001c 0570     		strb	r5, [r0]
+ 264 001e 2946     		mov	r1, r5
+ 238:Src/stm32f1xx_it.c ****     start = false;
+ 265              		.loc 1 238 0
+ 266 0020 3570     		strb	r5, [r6]
+ 267 0022 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 268 0024 DD78     		ldrb	r5, [r3, #3]	@ zero_extendqisi2
+ 269              	.L18:
+ 240:Src/stm32f1xx_it.c ****   }
+ 241:Src/stm32f1xx_it.c **** 
+ 242:Src/stm32f1xx_it.c ****   uint8_t temp_num = 0xaa + buf[0] +buf[1] +buf[2];
+ 270              		.loc 1 242 0
+ 271 0026 1319     		adds	r3, r2, r4
+ 272 0028 563B     		subs	r3, r3, #86
+ 273 002a 0344     		add	r3, r3, r0
+ 243:Src/stm32f1xx_it.c ****   
+ 244:Src/stm32f1xx_it.c ****   if(buf[0] == 0x21){
+ 274              		.loc 1 244 0
+ 275 002c 212A     		cmp	r2, #33
+ 242:Src/stm32f1xx_it.c ****   
+ 276              		.loc 1 242 0
+ 277 002e DBB2     		uxtb	r3, r3
+ 278              	.LVL3:
+ 279              		.loc 1 244 0
+ 280 0030 2DD0     		beq	.L59
+ 245:Src/stm32f1xx_it.c ****     tx_buf[0] = ((gray_data_final&0xff00)>>8);
+ 246:Src/stm32f1xx_it.c ****     tx_buf[1] = (gray_data_final&0x00ff);
+ 247:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x22){
+ 281              		.loc 1 247 0
+ARM GAS  /tmp/cc7UAIOT.s 			page 10
 
 
- 254:Src/stm32f1xx_it.c ****       TIM1->CCR2 = -temp;
- 255:Src/stm32f1xx_it.c ****     }
- 256:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x11){
- 278              		.loc 1 256 0
- 279 0038 112B     		cmp	r3, #17
- 280 003a 67D0     		beq	.L53
- 257:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 258:Src/stm32f1xx_it.c ****     TIM3->CCR4 = 1500 + temp;
- 259:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x12){
- 281              		.loc 1 259 0
- 282 003c 122B     		cmp	r3, #18
- 283 003e 73D0     		beq	.L54
- 260:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 261:Src/stm32f1xx_it.c ****     TIM3->CCR3 = 1500 + temp;
- 262:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x13){
- 284              		.loc 1 262 0
- 285 0040 132B     		cmp	r3, #19
- 286 0042 59D0     		beq	.L55
- 263:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 264:Src/stm32f1xx_it.c ****     TIM3->CCR2 = 1500 + temp;
- 265:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x14){
- 287              		.loc 1 265 0
- 288 0044 142B     		cmp	r3, #20
- 289 0046 00F08980 		beq	.L56
- 266:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 267:Src/stm32f1xx_it.c ****     TIM3->CCR1 = 1500 + temp;
- 268:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x15){
- 290              		.loc 1 268 0
- 291 004a 152B     		cmp	r3, #21
- 292 004c 00F09080 		beq	.L57
- 269:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 270:Src/stm32f1xx_it.c ****     TIM2->CCR4 = 1500 + temp;
- 271:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x16){
- 293              		.loc 1 271 0
- 294 0050 162B     		cmp	r3, #22
- 295 0052 78D0     		beq	.L58
- 272:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 273:Src/stm32f1xx_it.c ****     TIM2->CCR3 = 1500 + temp;
- 274:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x17){
- 296              		.loc 1 274 0
- 297 0054 172B     		cmp	r3, #23
- 298 0056 00F09680 		beq	.L59
- 275:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 276:Src/stm32f1xx_it.c ****     TIM2->CCR2 = 1500 + temp;
- 277:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x18){
- 299              		.loc 1 277 0
- 300 005a 182B     		cmp	r3, #24
- 301 005c 00F09E80 		beq	.L60
- 278:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
- 279:Src/stm32f1xx_it.c ****     TIM2->CCR1 = 1500 + temp;
- 280:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x21){
- 302              		.loc 1 280 0
- 303 0060 212B     		cmp	r3, #33
- 304 0062 00F0A680 		beq	.L61
- 281:Src/stm32f1xx_it.c ****     if(count == 4){
- 282:Src/stm32f1xx_it.c ****       SPI2->DR = ((gray_data_final&0xff00)>>8);
- 283:Src/stm32f1xx_it.c ****     }
-ARM GAS  /tmp/ccZ9uWVr.s 			page 11
+ 282 0032 222A     		cmp	r2, #34
+ 283 0034 0DD0     		beq	.L60
+ 248:Src/stm32f1xx_it.c ****     tx_buf[0] = ((gray_data_two_final&0xff00)>>8);
+ 249:Src/stm32f1xx_it.c ****     tx_buf[1] = (gray_data_two_final&0x00ff);
+ 250:Src/stm32f1xx_it.c ****   }else if((buf[0]&0xf0) == 0x50){
+ 284              		.loc 1 250 0
+ 285 0036 02F0F006 		and	r6, r2, #240
+ 286 003a 502E     		cmp	r6, #80
+ 287 003c 00F08980 		beq	.L61
+ 288              	.L27:
+ 251:Src/stm32f1xx_it.c ****     uint16_t steer_temp = 0x00;
+ 252:Src/stm32f1xx_it.c ****     switch(buf[0]){
+ 253:Src/stm32f1xx_it.c ****       case 0x51:
+ 254:Src/stm32f1xx_it.c ****         steer_temp = 0x01;
+ 255:Src/stm32f1xx_it.c ****         //steer_temp = TIM3->CCR4 - 1500;
+ 256:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 257:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 258:Src/stm32f1xx_it.c ****         break;
+ 259:Src/stm32f1xx_it.c ****       case 0x52:
+ 260:Src/stm32f1xx_it.c ****         steer_temp = 0x02;
+ 261:Src/stm32f1xx_it.c ****         //steer_temp = TIM3->CCR3 - 1500;
+ 262:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 263:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 264:Src/stm32f1xx_it.c ****         break;
+ 265:Src/stm32f1xx_it.c ****       case 0x53:
+ 266:Src/stm32f1xx_it.c ****         steer_temp = 0x03;
+ 267:Src/stm32f1xx_it.c ****         //steer_temp = TIM3->CCR2 - 1500;
+ 268:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 269:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 270:Src/stm32f1xx_it.c ****         break;
+ 271:Src/stm32f1xx_it.c ****       case 0x54:
+ 272:Src/stm32f1xx_it.c ****         steer_temp = 0x04;
+ 273:Src/stm32f1xx_it.c ****         //steer_temp = TIM3->CCR1 - 1500;
+ 274:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 275:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 276:Src/stm32f1xx_it.c ****         break;
+ 277:Src/stm32f1xx_it.c ****       case 0x55:
+ 278:Src/stm32f1xx_it.c ****         steer_temp = 0x05;
+ 279:Src/stm32f1xx_it.c ****         //steer_temp = TIM2->CCR4 - 1500;
+ 280:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 281:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 282:Src/stm32f1xx_it.c ****         break;
+ 283:Src/stm32f1xx_it.c ****       case 0x56:
+ 284:Src/stm32f1xx_it.c ****         steer_temp = 0x06;
+ 285:Src/stm32f1xx_it.c ****         //steer_temp = TIM2->CCR3 - 1500;
+ 286:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 287:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 288:Src/stm32f1xx_it.c ****         break;
+ 289:Src/stm32f1xx_it.c ****       case 0x57:
+ 290:Src/stm32f1xx_it.c ****         steer_temp = 0x07;
+ 291:Src/stm32f1xx_it.c ****         //steer_temp = TIM2->CCR2 - 1500;
+ 292:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 293:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 294:Src/stm32f1xx_it.c ****         break;
+ 295:Src/stm32f1xx_it.c ****       case 0x58:
+ 296:Src/stm32f1xx_it.c ****         steer_temp = 0x08;
+ 297:Src/stm32f1xx_it.c ****         //steer_temp = TIM2->CCR1 - 1500;
+ARM GAS  /tmp/cc7UAIOT.s 			page 11
 
 
- 284:Src/stm32f1xx_it.c ****     else if(count == 5){
- 285:Src/stm32f1xx_it.c ****       SPI2->DR = (gray_data_final&0x00ff);
- 286:Src/stm32f1xx_it.c ****     }
- 287:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x22){
- 305              		.loc 1 287 0
- 306 0066 222B     		cmp	r3, #34
- 307 0068 00F0AE80 		beq	.L62
- 288:Src/stm32f1xx_it.c ****     if(count == 4){
- 289:Src/stm32f1xx_it.c ****       SPI2->DR = ((gray_data_two_final&0xff00)>>8);
- 290:Src/stm32f1xx_it.c ****     }
- 291:Src/stm32f1xx_it.c ****     else if(count == 5){
- 292:Src/stm32f1xx_it.c ****       SPI2->DR = (gray_data_two_final&0x00ff);
- 293:Src/stm32f1xx_it.c ****     }
- 294:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x31){
- 308              		.loc 1 294 0
- 309 006c 312B     		cmp	r3, #49
- 310 006e 09D1     		bne	.L16
- 295:Src/stm32f1xx_it.c ****     if(count == 4){
- 311              		.loc 1 295 0
- 312 0070 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
- 313 0072 042B     		cmp	r3, #4
- 314 0074 00F0BF80 		beq	.L63
- 296:Src/stm32f1xx_it.c ****       SPI2->DR = ((other_data_final&0xff00)>>8);
- 297:Src/stm32f1xx_it.c ****     }
- 298:Src/stm32f1xx_it.c ****     else if(count == 5){
- 315              		.loc 1 298 0
- 316 0078 052B     		cmp	r3, #5
- 317 007a 03D1     		bne	.L16
- 299:Src/stm32f1xx_it.c ****       SPI2->DR = (other_data_final&0x00ff);
- 318              		.loc 1 299 0
- 319 007c 664A     		ldr	r2, .L66+20
- 320 007e 614B     		ldr	r3, .L66
- 321 0080 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 322 0082 DA60     		str	r2, [r3, #12]
- 323              	.L16:
+ 298:Src/stm32f1xx_it.c ****         tx_buf[0] = ((steer_temp&0xff00)>>8);
+ 299:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 300:Src/stm32f1xx_it.c ****         break;
+ 301:Src/stm32f1xx_it.c ****     }
+ 302:Src/stm32f1xx_it.c ****   }
+ 303:Src/stm32f1xx_it.c **** 
+ 304:Src/stm32f1xx_it.c ****   if(count == 1){
+ 289              		.loc 1 304 0
+ 290 0040 0129     		cmp	r1, #1
+ 291 0042 02D1     		bne	.L38
+ 305:Src/stm32f1xx_it.c ****     data_use_r = 0;
+ 292              		.loc 1 305 0
+ 293 0044 0027     		movs	r7, #0
+ 294 0046 934E     		ldr	r6, .L70+16
+ 295 0048 3770     		strb	r7, [r6]
+ 296              	.L38:
+ 306:Src/stm32f1xx_it.c ****   }
+ 307:Src/stm32f1xx_it.c ****   if(temp_num == buf[3]){
+ 297              		.loc 1 307 0
+ 298 004a AB42     		cmp	r3, r5
+ 299 004c 0AD0     		beq	.L62
+ 300              	.LVL4:
+ 301              	.L16:
+ 308:Src/stm32f1xx_it.c ****     if((buf[0] == 0x05) && count == 5){
+ 309:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 310:Src/stm32f1xx_it.c ****       if(temp >= 0){
+ 311:Src/stm32f1xx_it.c ****         TIM1->CCR3 = temp;
+ 312:Src/stm32f1xx_it.c ****         TIM1->CCR4 = 0;
+ 313:Src/stm32f1xx_it.c ****         TIM1->CCR1 = temp;
+ 314:Src/stm32f1xx_it.c ****         TIM1->CCR2 = 0;
+ 315:Src/stm32f1xx_it.c ****       }else{
+ 316:Src/stm32f1xx_it.c ****         TIM1->CCR3 = 0;
+ 317:Src/stm32f1xx_it.c ****         TIM1->CCR4 = -temp;
+ 318:Src/stm32f1xx_it.c ****         TIM1->CCR1 = 0;
+ 319:Src/stm32f1xx_it.c ****         TIM1->CCR2 = -temp;
+ 320:Src/stm32f1xx_it.c ****       }
+ 321:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 322:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x01) && count == 5){
+ 323:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 324:Src/stm32f1xx_it.c ****       if(temp >= 0){
+ 325:Src/stm32f1xx_it.c ****         TIM1->CCR3 = temp;
+ 326:Src/stm32f1xx_it.c ****         TIM1->CCR4 = 0;
+ 327:Src/stm32f1xx_it.c ****       }else{
+ 328:Src/stm32f1xx_it.c ****         TIM1->CCR3 = 0;
+ 329:Src/stm32f1xx_it.c ****         TIM1->CCR4 = -temp;
+ 330:Src/stm32f1xx_it.c ****       }
+ 331:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 332:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x02) && count == 5){
+ 333:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 334:Src/stm32f1xx_it.c ****       if(temp >= 0){
+ 335:Src/stm32f1xx_it.c ****         TIM1->CCR1 = temp;
+ 336:Src/stm32f1xx_it.c ****         TIM1->CCR2 = 0;
+ 337:Src/stm32f1xx_it.c ****       }else{
+ 338:Src/stm32f1xx_it.c ****         TIM1->CCR1 = 0;
+ 339:Src/stm32f1xx_it.c ****         TIM1->CCR2 = -temp;
+ 340:Src/stm32f1xx_it.c ****       }
+ 341:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ARM GAS  /tmp/cc7UAIOT.s 			page 12
+
+
+ 342:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x11) && count == 5){
+ 343:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 344:Src/stm32f1xx_it.c ****       TIM3->CCR4 = 1500 + temp;
+ 345:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 346:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x12) && count == 5){
+ 347:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 348:Src/stm32f1xx_it.c ****       TIM3->CCR3 = 1500 + temp;
+ 349:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 350:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x13) && count == 5){
+ 351:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 352:Src/stm32f1xx_it.c ****       TIM3->CCR2 = 1500 + temp;
+ 353:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 354:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x14) && count == 5){
+ 355:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 356:Src/stm32f1xx_it.c ****       TIM3->CCR1 = 1500 + temp;
+ 357:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 358:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x15) && count == 5){
+ 359:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 360:Src/stm32f1xx_it.c ****       TIM2->CCR4 = 1500 + temp;
+ 361:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 362:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x16) && count == 5){
+ 363:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 364:Src/stm32f1xx_it.c ****       TIM2->CCR3 = 1500 + temp;
+ 365:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 366:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x17) && count == 5){
+ 367:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 368:Src/stm32f1xx_it.c ****       TIM2->CCR2 = 1500 + temp;
+ 369:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 370:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x18) && count == 5){
+ 371:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 372:Src/stm32f1xx_it.c ****       TIM2->CCR1 = 1500 + temp;
+ 373:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 374:Src/stm32f1xx_it.c ****     }
+ 375:Src/stm32f1xx_it.c ****   }
+ 376:Src/stm32f1xx_it.c ****   /* USER CODE END SPI2_IRQn 0 */
+ 377:Src/stm32f1xx_it.c ****   //HAL_SPI_IRQHandler(&hspi2);
+ 378:Src/stm32f1xx_it.c ****   /* USER CODE BEGIN SPI2_IRQn 1 */
+ 379:Src/stm32f1xx_it.c ****   /*if(buf[0] == 0x01){
+ 380:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 381:Src/stm32f1xx_it.c ****     if(temp >= 0){
+ 382:Src/stm32f1xx_it.c ****       TIM1->CCR3 = temp;
+ 383:Src/stm32f1xx_it.c ****       TIM1->CCR4 = 0;
+ 384:Src/stm32f1xx_it.c ****     }else{
+ 385:Src/stm32f1xx_it.c ****       TIM1->CCR3 = 0;
+ 386:Src/stm32f1xx_it.c ****       TIM1->CCR4 = -temp;
+ 387:Src/stm32f1xx_it.c ****     }
+ 388:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x02){
+ 389:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 390:Src/stm32f1xx_it.c ****     if(temp >= 0){
+ 391:Src/stm32f1xx_it.c ****       TIM1->CCR1 = temp;
+ 392:Src/stm32f1xx_it.c ****       TIM1->CCR2 = 0;
+ 393:Src/stm32f1xx_it.c ****     }else{
+ 394:Src/stm32f1xx_it.c ****       TIM1->CCR1 = 0;
+ 395:Src/stm32f1xx_it.c ****       TIM1->CCR2 = -temp;
+ 396:Src/stm32f1xx_it.c ****     }
+ 397:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x11){
+ 398:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ARM GAS  /tmp/cc7UAIOT.s 			page 13
+
+
+ 399:Src/stm32f1xx_it.c ****     TIM3->CCR4 = 1500 + temp;
+ 400:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x12){
+ 401:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 402:Src/stm32f1xx_it.c ****     TIM3->CCR3 = 1500 + temp;
+ 403:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x13){
+ 404:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 405:Src/stm32f1xx_it.c ****     TIM3->CCR2 = 1500 + temp;
+ 406:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x14){
+ 407:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 408:Src/stm32f1xx_it.c ****     TIM3->CCR1 = 1500 + temp;
+ 409:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x15){
+ 410:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 411:Src/stm32f1xx_it.c ****     TIM2->CCR4 = 1500 + temp;
+ 412:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x16){
+ 413:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 414:Src/stm32f1xx_it.c ****     TIM2->CCR3 = 1500 + temp;
+ 415:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x17){
+ 416:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 417:Src/stm32f1xx_it.c ****     TIM2->CCR2 = 1500 + temp;
+ 418:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x18){
+ 419:Src/stm32f1xx_it.c ****     int16_t temp = (buf[1]<<8 | buf[2]);
+ 420:Src/stm32f1xx_it.c ****     TIM2->CCR1 = 1500 + temp;
+ 421:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x21){
+ 422:Src/stm32f1xx_it.c ****     if(count == 4){
+ 423:Src/stm32f1xx_it.c ****       SPI2->DR = ((gray_data_final&0xff00)>>8);
+ 424:Src/stm32f1xx_it.c ****     }
+ 425:Src/stm32f1xx_it.c ****     else if(count == 5){
+ 426:Src/stm32f1xx_it.c ****       SPI2->DR = (gray_data_final&0x00ff);
+ 427:Src/stm32f1xx_it.c ****     }
+ 428:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x22){
+ 429:Src/stm32f1xx_it.c ****     if(count == 4){
+ 430:Src/stm32f1xx_it.c ****       SPI2->DR = ((gray_data_two_final&0xff00)>>8);
+ 431:Src/stm32f1xx_it.c ****     }
+ 432:Src/stm32f1xx_it.c ****     else if(count == 5){
+ 433:Src/stm32f1xx_it.c ****       SPI2->DR = (gray_data_two_final&0x00ff);
+ 434:Src/stm32f1xx_it.c ****     }
+ 435:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x31){
+ 436:Src/stm32f1xx_it.c ****     if(count == 4){
+ 437:Src/stm32f1xx_it.c ****       SPI2->DR = ((other_data_final&0xff00)>>8);
+ 438:Src/stm32f1xx_it.c ****     }
+ 439:Src/stm32f1xx_it.c ****     else if(count == 5){
+ 440:Src/stm32f1xx_it.c ****       SPI2->DR = (other_data_final&0x00ff);
+ 441:Src/stm32f1xx_it.c ****     }
+ 442:Src/stm32f1xx_it.c ****   }
+ 443:Src/stm32f1xx_it.c ****   */
+ 444:Src/stm32f1xx_it.c ****   /* USER CODE END SPI2_IRQn 1 */
+ 445:Src/stm32f1xx_it.c **** }
+ 302              		.loc 1 445 0
+ 303 004e F0BC     		pop	{r4, r5, r6, r7}
+ 304              	.LCFI3:
+ 305              		.cfi_remember_state
+ 306              		.cfi_restore 7
+ 307              		.cfi_restore 6
+ 308              		.cfi_restore 5
+ 309              		.cfi_restore 4
+ 310              		.cfi_def_cfa_offset 0
+ 311 0050 7047     		bx	lr
+ARM GAS  /tmp/cc7UAIOT.s 			page 14
+
+
+ 312              	.LVL5:
+ 313              	.L60:
+ 314              	.LCFI4:
+ 315              		.cfi_restore_state
+ 248:Src/stm32f1xx_it.c ****     tx_buf[1] = (gray_data_two_final&0x00ff);
+ 316              		.loc 1 248 0
+ 317 0052 914F     		ldr	r7, .L70+20
+ 318              	.L56:
+ 319 0054 3F88     		ldrh	r7, [r7]
+ 320 0056 914E     		ldr	r6, .L70+24
+ 321 0058 4FEA172C 		lsr	ip, r7, #8
+ 322 005c 86F800C0 		strb	ip, [r6]
+ 249:Src/stm32f1xx_it.c ****   }else if((buf[0]&0xf0) == 0x50){
+ 323              		.loc 1 249 0
+ 324 0060 7770     		strb	r7, [r6, #1]
+ 325 0062 EDE7     		b	.L27
+ 326              	.L62:
+ 308:Src/stm32f1xx_it.c ****     if((buf[0] == 0x05) && count == 5){
+ 327              		.loc 1 308 0
+ 328 0064 052A     		cmp	r2, #5
+ 329 0066 7FD0     		beq	.L63
+ 322:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 330              		.loc 1 322 0
+ 331 0068 012A     		cmp	r2, #1
+ 332 006a 3FD0     		beq	.L64
+ 332:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 333              		.loc 1 332 0
+ 334 006c 022A     		cmp	r2, #2
+ 335 006e 40F0CA80 		bne	.L45
+ 332:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 336              		.loc 1 332 0 is_stmt 0 discriminator 1
+ 337 0072 0529     		cmp	r1, #5
+ 338 0074 EBD1     		bne	.L16
+ 339              	.LBB2:
+ 333:Src/stm32f1xx_it.c ****       if(temp >= 0){
+ 340              		.loc 1 333 0 is_stmt 1
+ 341 0076 40EA0420 		orr	r0, r0, r4, lsl #8
+ 342 007a 00B2     		sxth	r0, r0
+ 343              	.LVL6:
+ 334:Src/stm32f1xx_it.c ****         TIM1->CCR1 = temp;
+ 344              		.loc 1 334 0
+ 345 007c 0028     		cmp	r0, #0
+ 336:Src/stm32f1xx_it.c ****       }else{
+ 346              		.loc 1 336 0
+ 347 007e 4FF00001 		mov	r1, #0
+ 335:Src/stm32f1xx_it.c ****         TIM1->CCR2 = 0;
+ 348              		.loc 1 335 0
+ 349 0082 874A     		ldr	r2, .L70+28
+ 334:Src/stm32f1xx_it.c ****         TIM1->CCR1 = temp;
+ 350              		.loc 1 334 0
+ 351 0084 C0F2D980 		blt	.L46
+ 335:Src/stm32f1xx_it.c ****         TIM1->CCR2 = 0;
+ 352              		.loc 1 335 0
+ 353 0088 5063     		str	r0, [r2, #52]
+ 336:Src/stm32f1xx_it.c ****       }else{
+ 354              		.loc 1 336 0
+ 355 008a 9163     		str	r1, [r2, #56]
+ARM GAS  /tmp/cc7UAIOT.s 			page 15
+
+
+ 356 008c 7BE0     		b	.L42
+ 357              	.LVL7:
+ 358              	.L59:
+ 359              	.LBE2:
+ 245:Src/stm32f1xx_it.c ****     tx_buf[1] = (gray_data_final&0x00ff);
+ 360              		.loc 1 245 0
+ 361 008e 854F     		ldr	r7, .L70+32
+ 362 0090 E0E7     		b	.L56
+ 363              	.LVL8:
+ 364              	.L57:
+ 211:Src/stm32f1xx_it.c ****     start = true;
+ 365              		.loc 1 211 0 discriminator 1
+ 366 0092 002B     		cmp	r3, #0
+ 367 0094 BBD1     		bne	.L17
+ 212:Src/stm32f1xx_it.c ****     count ++;
+ 368              		.loc 1 212 0
+ 369 0096 0123     		movs	r3, #1
+ 214:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 1)){      //收到控制位，代表后两位要发的东�
+ 370              		.loc 1 214 0
+ 371 0098 1125     		movs	r5, #17
+ 213:Src/stm32f1xx_it.c ****     SPI2->DR = other_status_final;                              //可替换成程序运行开关状
+ 372              		.loc 1 213 0
+ 373 009a 7D4C     		ldr	r4, .L70+12
+ 212:Src/stm32f1xx_it.c ****     count ++;
+ 374              		.loc 1 212 0
+ 375 009c 0370     		strb	r3, [r0]
+ 213:Src/stm32f1xx_it.c ****     SPI2->DR = other_status_final;                              //可替换成程序运行开关状
+ 376              		.loc 1 213 0
+ 377 009e 2178     		ldrb	r1, [r4]	@ zero_extendqisi2
+ 378 00a0 7A4B     		ldr	r3, .L70+8
+ 379 00a2 0131     		adds	r1, r1, #1
+ 380 00a4 C9B2     		uxtb	r1, r1
+ 381 00a6 2170     		strb	r1, [r4]
+ 214:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 1)){      //收到控制位，代表后两位要发的东�
+ 382              		.loc 1 214 0
+ 383 00a8 D560     		str	r5, [r2, #12]
+ 384 00aa 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 385 00ac 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 386 00ae 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 387 00b0 DD78     		ldrb	r5, [r3, #3]	@ zero_extendqisi2
+ 388 00b2 B8E7     		b	.L18
+ 389              	.L58:
+ 215:Src/stm32f1xx_it.c ****     buf[0] = SPI2->DR;
+ 390              		.loc 1 215 0 discriminator 1
+ 391 00b4 764E     		ldr	r6, .L70+12
+ 392 00b6 3178     		ldrb	r1, [r6]	@ zero_extendqisi2
+ 393 00b8 0129     		cmp	r1, #1
+ 394 00ba 25D0     		beq	.L65
+ 395 00bc 734B     		ldr	r3, .L70+8
+ 219:Src/stm32f1xx_it.c ****     buf[1] = SPI2->DR;
+ 396              		.loc 1 219 0 discriminator 1
+ 397 00be 0229     		cmp	r1, #2
+ 398 00c0 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 399 00c2 2FD0     		beq	.L66
+ 223:Src/stm32f1xx_it.c ****     buf[2] = SPI2->DR;
+ 400              		.loc 1 223 0 discriminator 1
+ 401 00c4 0329     		cmp	r1, #3
+ARM GAS  /tmp/cc7UAIOT.s 			page 16
+
+
+ 402 00c6 38D0     		beq	.L67
+ 227:Src/stm32f1xx_it.c ****     SPI2->DR = tx_buf[1];
+ 403              		.loc 1 227 0 discriminator 1
+ 404 00c8 0429     		cmp	r1, #4
+ 405 00ca 61D0     		beq	.L68
+ 230:Src/stm32f1xx_it.c ****     SPI2->DR = (tx_buf[0] + tx_buf[1]) & 0xff;
+ 406              		.loc 1 230 0 discriminator 1
+ 407 00cc 0529     		cmp	r1, #5
+ 408 00ce 65D0     		beq	.L69
+ 233:Src/stm32f1xx_it.c ****     buf[3] = SPI2->DR;
+ 409              		.loc 1 233 0 discriminator 1
+ 410 00d0 0629     		cmp	r1, #6
+ 411 00d2 A1D1     		bne	.L25
+ 236:Src/stm32f1xx_it.c ****   }else{
+ 412              		.loc 1 236 0
+ 413 00d4 0721     		movs	r1, #7
+ 234:Src/stm32f1xx_it.c ****     SPI2->DR = data_use_r;
+ 414              		.loc 1 234 0
+ 415 00d6 6B48     		ldr	r0, .L70
+ 235:Src/stm32f1xx_it.c ****     count ++;
+ 416              		.loc 1 235 0
+ 417 00d8 6E4C     		ldr	r4, .L70+16
+ 234:Src/stm32f1xx_it.c ****     SPI2->DR = data_use_r;
+ 418              		.loc 1 234 0
+ 419 00da C568     		ldr	r5, [r0, #12]
+ 235:Src/stm32f1xx_it.c ****     count ++;
+ 420              		.loc 1 235 0
+ 421 00dc 2478     		ldrb	r4, [r4]	@ zero_extendqisi2
+ 234:Src/stm32f1xx_it.c ****     SPI2->DR = data_use_r;
+ 422              		.loc 1 234 0
+ 423 00de EDB2     		uxtb	r5, r5
+ 424 00e0 DD70     		strb	r5, [r3, #3]
+ 235:Src/stm32f1xx_it.c ****     count ++;
+ 425              		.loc 1 235 0
+ 426 00e2 C460     		str	r4, [r0, #12]
+ 427 00e4 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 428 00e6 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 236:Src/stm32f1xx_it.c ****   }else{
+ 429              		.loc 1 236 0
+ 430 00e8 3170     		strb	r1, [r6]
+ 431 00ea 9CE7     		b	.L18
+ 432              	.LVL9:
+ 433              	.L64:
+ 322:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 434              		.loc 1 322 0 discriminator 1
+ 435 00ec 0529     		cmp	r1, #5
+ 436 00ee AED1     		bne	.L16
+ 437              	.LBB3:
+ 323:Src/stm32f1xx_it.c ****       if(temp >= 0){
+ 438              		.loc 1 323 0
+ 439 00f0 40EA0420 		orr	r0, r0, r4, lsl #8
+ 440 00f4 00B2     		sxth	r0, r0
+ 441              	.LVL10:
+ 324:Src/stm32f1xx_it.c ****         TIM1->CCR3 = temp;
+ 442              		.loc 1 324 0
+ 443 00f6 0028     		cmp	r0, #0
+ 326:Src/stm32f1xx_it.c ****       }else{
+ARM GAS  /tmp/cc7UAIOT.s 			page 17
+
+
+ 444              		.loc 1 326 0
+ 445 00f8 4FF00001 		mov	r1, #0
+ 325:Src/stm32f1xx_it.c ****         TIM1->CCR4 = 0;
+ 446              		.loc 1 325 0
+ 447 00fc 684A     		ldr	r2, .L70+28
+ 324:Src/stm32f1xx_it.c ****         TIM1->CCR3 = temp;
+ 448              		.loc 1 324 0
+ 449 00fe C0F29880 		blt	.L44
+ 325:Src/stm32f1xx_it.c ****         TIM1->CCR4 = 0;
+ 450              		.loc 1 325 0
+ 451 0102 D063     		str	r0, [r2, #60]
+ 326:Src/stm32f1xx_it.c ****       }else{
+ 452              		.loc 1 326 0
+ 453 0104 1164     		str	r1, [r2, #64]
+ 454 0106 3EE0     		b	.L42
+ 455              	.LVL11:
+ 456              	.L65:
+ 457              	.LBE3:
+ 218:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 2)){      //收到高8位，发送控制位
+ 458              		.loc 1 218 0
+ 459 0108 0227     		movs	r7, #2
+ 217:Src/stm32f1xx_it.c ****     count ++;
+ 460              		.loc 1 217 0
+ 461 010a 1124     		movs	r4, #17
+ 218:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 2)){      //收到高8位，发送控制位
+ 462              		.loc 1 218 0
+ 463 010c 3946     		mov	r1, r7
+ 216:Src/stm32f1xx_it.c ****     SPI2->DR = other_status_final;
+ 464              		.loc 1 216 0
+ 465 010e 5D48     		ldr	r0, .L70
+ 466 0110 5E4B     		ldr	r3, .L70+8
+ 467 0112 C268     		ldr	r2, [r0, #12]
+ 468 0114 D2B2     		uxtb	r2, r2
+ 469 0116 1A70     		strb	r2, [r3]
+ 470              	.L55:
+ 228:Src/stm32f1xx_it.c ****     count ++;
+ 471              		.loc 1 228 0
+ 472 0118 C460     		str	r4, [r0, #12]
+ 473 011a 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 474 011c 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 475 011e DD78     		ldrb	r5, [r3, #3]	@ zero_extendqisi2
+ 229:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 5)){      //发送数据校验
+ 476              		.loc 1 229 0
+ 477 0120 3770     		strb	r7, [r6]
+ 478 0122 80E7     		b	.L18
+ 479              	.L66:
+ 222:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 3)){      //收到低8位，发送数据位
+ 480              		.loc 1 222 0
+ 481 0124 0327     		movs	r7, #3
+ 220:Src/stm32f1xx_it.c ****     SPI2->DR = buf[0];
+ 482              		.loc 1 220 0
+ 483 0126 574D     		ldr	r5, .L70
+ 222:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 3)){      //收到低8位，发送数据位
+ 484              		.loc 1 222 0
+ 485 0128 3946     		mov	r1, r7
+ 220:Src/stm32f1xx_it.c ****     SPI2->DR = buf[0];
+ 486              		.loc 1 220 0
+ARM GAS  /tmp/cc7UAIOT.s 			page 18
+
+
+ 487 012a EC68     		ldr	r4, [r5, #12]
+ 488 012c E4B2     		uxtb	r4, r4
+ 489 012e 5C70     		strb	r4, [r3, #1]
+ 221:Src/stm32f1xx_it.c ****     count ++;
+ 490              		.loc 1 221 0
+ 491 0130 EA60     		str	r2, [r5, #12]
+ 492 0132 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 493 0134 DD78     		ldrb	r5, [r3, #3]	@ zero_extendqisi2
+ 222:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 3)){      //收到低8位，发送数据位
+ 494              		.loc 1 222 0
+ 495 0136 3770     		strb	r7, [r6]
+ 496 0138 75E7     		b	.L18
+ 497              	.L67:
+ 226:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 4)){      //发送数据位
+ 498              		.loc 1 226 0
+ 499 013a 0421     		movs	r1, #4
+ 224:Src/stm32f1xx_it.c ****     SPI2->DR = tx_buf[0];
+ 500              		.loc 1 224 0
+ 501 013c 514C     		ldr	r4, .L70
+ 225:Src/stm32f1xx_it.c ****     count ++;
+ 502              		.loc 1 225 0
+ 503 013e 574D     		ldr	r5, .L70+24
+ 224:Src/stm32f1xx_it.c ****     SPI2->DR = tx_buf[0];
+ 504              		.loc 1 224 0
+ 505 0140 E068     		ldr	r0, [r4, #12]
+ 225:Src/stm32f1xx_it.c ****     count ++;
+ 506              		.loc 1 225 0
+ 507 0142 2D78     		ldrb	r5, [r5]	@ zero_extendqisi2
+ 224:Src/stm32f1xx_it.c ****     SPI2->DR = tx_buf[0];
+ 508              		.loc 1 224 0
+ 509 0144 C0B2     		uxtb	r0, r0
+ 510 0146 9870     		strb	r0, [r3, #2]
+ 225:Src/stm32f1xx_it.c ****     count ++;
+ 511              		.loc 1 225 0
+ 512 0148 E560     		str	r5, [r4, #12]
+ 513 014a 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 514 014c DD78     		ldrb	r5, [r3, #3]	@ zero_extendqisi2
+ 226:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 4)){      //发送数据位
+ 515              		.loc 1 226 0
+ 516 014e 3170     		strb	r1, [r6]
+ 517 0150 69E7     		b	.L18
+ 518              	.LVL12:
+ 519              	.L61:
+ 520              	.LBB4:
+ 252:Src/stm32f1xx_it.c ****       case 0x51:
+ 521              		.loc 1 252 0
+ 522 0152 A2F15106 		sub	r6, r2, #81
+ 523 0156 072E     		cmp	r6, #7
+ 524 0158 3FF672AF 		bhi	.L27
+ 525 015c DFE806F0 		tbb	[pc, r6]
+ 526              	.L30:
+ 527 0160 4E       		.byte	(.L29-.L30)/2
+ 528 0161 49       		.byte	(.L31-.L30)/2
+ 529 0162 44       		.byte	(.L32-.L30)/2
+ 530 0163 3F       		.byte	(.L33-.L30)/2
+ 531 0164 3A       		.byte	(.L34-.L30)/2
+ 532 0165 35       		.byte	(.L35-.L30)/2
+ARM GAS  /tmp/cc7UAIOT.s 			page 19
+
+
+ 533 0166 30       		.byte	(.L36-.L30)/2
+ 534 0167 2B       		.byte	(.L37-.L30)/2
+ 535              	.LVL13:
+ 536              		.p2align 1
+ 537              	.L63:
+ 538              	.LBE4:
+ 308:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 539              		.loc 1 308 0 discriminator 1
+ 540 0168 0529     		cmp	r1, #5
+ 541 016a 7FF470AF 		bne	.L16
+ 542              	.LBB5:
+ 309:Src/stm32f1xx_it.c ****       if(temp >= 0){
+ 543              		.loc 1 309 0
+ 544 016e 40EA0420 		orr	r0, r0, r4, lsl #8
+ 545 0172 00B2     		sxth	r0, r0
+ 546              	.LVL14:
+ 310:Src/stm32f1xx_it.c ****         TIM1->CCR3 = temp;
+ 547              		.loc 1 310 0
+ 548 0174 0028     		cmp	r0, #0
+ 312:Src/stm32f1xx_it.c ****         TIM1->CCR1 = temp;
+ 549              		.loc 1 312 0
+ 550 0176 4FF00001 		mov	r1, #0
+ 311:Src/stm32f1xx_it.c ****         TIM1->CCR4 = 0;
+ 551              		.loc 1 311 0
+ 552 017a 494A     		ldr	r2, .L70+28
+ 310:Src/stm32f1xx_it.c ****         TIM1->CCR3 = temp;
+ 553              		.loc 1 310 0
+ 554 017c 53DB     		blt	.L41
+ 311:Src/stm32f1xx_it.c ****         TIM1->CCR4 = 0;
+ 555              		.loc 1 311 0
+ 556 017e D063     		str	r0, [r2, #60]
+ 312:Src/stm32f1xx_it.c ****         TIM1->CCR1 = temp;
+ 557              		.loc 1 312 0
+ 558 0180 1164     		str	r1, [r2, #64]
+ 313:Src/stm32f1xx_it.c ****         TIM1->CCR2 = 0;
+ 559              		.loc 1 313 0
+ 560 0182 5063     		str	r0, [r2, #52]
+ 314:Src/stm32f1xx_it.c ****       }else{
+ 561              		.loc 1 314 0
+ 562 0184 9163     		str	r1, [r2, #56]
+ 563              	.LVL15:
+ 564              	.L42:
+ 321:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x01) && count == 5){
+ 565              		.loc 1 321 0
+ 566 0186 0122     		movs	r2, #1
+ 567 0188 424B     		ldr	r3, .L70+16
+ 568 018a 1A70     		strb	r2, [r3]
+ 569              	.LBE5:
+ 570              		.loc 1 445 0
+ 571 018c F0BC     		pop	{r4, r5, r6, r7}
+ 572              	.LCFI5:
+ 573              		.cfi_remember_state
+ 574              		.cfi_restore 7
+ 575              		.cfi_restore 6
+ 576              		.cfi_restore 5
+ 577              		.cfi_restore 4
+ 578              		.cfi_def_cfa_offset 0
+ARM GAS  /tmp/cc7UAIOT.s 			page 20
+
+
+ 579 018e 7047     		bx	lr
+ 580              	.L68:
+ 581              	.LCFI6:
+ 582              		.cfi_restore_state
+ 229:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 5)){      //发送数据校验
+ 583              		.loc 1 229 0
+ 584 0190 0527     		movs	r7, #5
+ 228:Src/stm32f1xx_it.c ****     count ++;
+ 585              		.loc 1 228 0
+ 586 0192 4249     		ldr	r1, .L70+24
+ 587 0194 3B48     		ldr	r0, .L70
+ 588 0196 4C78     		ldrb	r4, [r1, #1]	@ zero_extendqisi2
+ 229:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 5)){      //发送数据校验
+ 589              		.loc 1 229 0
+ 590 0198 3946     		mov	r1, r7
+ 591 019a BDE7     		b	.L55
+ 592              	.L69:
+ 232:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 6)){      //发送数据使用情况
+ 593              		.loc 1 232 0
+ 594 019c 0621     		movs	r1, #6
+ 231:Src/stm32f1xx_it.c ****     count ++;
+ 595              		.loc 1 231 0
+ 596 019e 3F4C     		ldr	r4, .L70+24
+ 597 01a0 384D     		ldr	r5, .L70
+ 598 01a2 2078     		ldrb	r0, [r4]	@ zero_extendqisi2
+ 599 01a4 6478     		ldrb	r4, [r4, #1]	@ zero_extendqisi2
+ 600 01a6 2044     		add	r0, r0, r4
+ 601 01a8 C0B2     		uxtb	r0, r0
+ 602 01aa E860     		str	r0, [r5, #12]
+ 603 01ac 5C78     		ldrb	r4, [r3, #1]	@ zero_extendqisi2
+ 604 01ae 9878     		ldrb	r0, [r3, #2]	@ zero_extendqisi2
+ 605 01b0 DD78     		ldrb	r5, [r3, #3]	@ zero_extendqisi2
+ 232:Src/stm32f1xx_it.c ****   }else if((start == true) && (count == 6)){      //发送数据使用情况
+ 606              		.loc 1 232 0
+ 607 01b2 3170     		strb	r1, [r6]
+ 608 01b4 37E7     		b	.L18
+ 609              	.LVL16:
+ 610              	.L37:
+ 611              	.LBB6:
+ 298:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 612              		.loc 1 298 0
+ 613 01b6 4FF40067 		mov	r7, #2048
+ 614 01ba 384E     		ldr	r6, .L70+24
+ 615 01bc 3780     		strh	r7, [r6]	@ movhi
  300:Src/stm32f1xx_it.c ****     }
- 301:Src/stm32f1xx_it.c ****   }
- 302:Src/stm32f1xx_it.c ****   
- 303:Src/stm32f1xx_it.c ****   /* USER CODE END SPI2_IRQn 1 */
- 304:Src/stm32f1xx_it.c **** }
- 324              		.loc 1 304 0
- 325 0084 38BD     		pop	{r3, r4, r5, pc}
- 326              	.L52:
- 327              	.LBB2:
- 248:Src/stm32f1xx_it.c ****     if(temp >= 0){
- 328              		.loc 1 248 0
- 329 0086 6A78     		ldrb	r2, [r5, #1]	@ zero_extendqisi2
- 330 0088 AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 251:Src/stm32f1xx_it.c ****     }else{
- 331              		.loc 1 251 0
- 332 008a 0021     		movs	r1, #0
- 248:Src/stm32f1xx_it.c ****     if(temp >= 0){
- 333              		.loc 1 248 0
- 334 008c 43EA0223 		orr	r3, r3, r2, lsl #8
- 335 0090 1BB2     		sxth	r3, r3
- 336              	.LVL3:
- 249:Src/stm32f1xx_it.c ****       TIM1->CCR1 = temp;
-ARM GAS  /tmp/ccZ9uWVr.s 			page 12
+ 616              		.loc 1 300 0
+ 617 01be 3FE7     		b	.L27
+ 618              	.LVL17:
+ 619              	.L36:
+ 292:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 620              		.loc 1 292 0
+ 621 01c0 4FF4E067 		mov	r7, #1792
+ 622 01c4 354E     		ldr	r6, .L70+24
+ 623 01c6 3780     		strh	r7, [r6]	@ movhi
+ 294:Src/stm32f1xx_it.c ****       case 0x58:
+ 624              		.loc 1 294 0
+ 625 01c8 3AE7     		b	.L27
+ARM GAS  /tmp/cc7UAIOT.s 			page 21
 
 
- 337              		.loc 1 249 0
- 338 0092 002B     		cmp	r3, #0
- 250:Src/stm32f1xx_it.c ****       TIM1->CCR2 = 0;
- 339              		.loc 1 250 0
- 340 0094 614A     		ldr	r2, .L66+24
- 249:Src/stm32f1xx_it.c ****       TIM1->CCR1 = temp;
- 341              		.loc 1 249 0
- 342 0096 2BDB     		blt	.L29
- 250:Src/stm32f1xx_it.c ****       TIM1->CCR2 = 0;
- 343              		.loc 1 250 0
- 344 0098 5363     		str	r3, [r2, #52]
- 251:Src/stm32f1xx_it.c ****     }else{
- 345              		.loc 1 251 0
- 346 009a 9163     		str	r1, [r2, #56]
- 347              	.LBE2:
- 348              		.loc 1 304 0
- 349 009c 38BD     		pop	{r3, r4, r5, pc}
- 350              	.LVL4:
- 351              	.L51:
- 352              	.LBB3:
- 239:Src/stm32f1xx_it.c ****     if(temp >= 0){
- 353              		.loc 1 239 0
- 354 009e 6A78     		ldrb	r2, [r5, #1]	@ zero_extendqisi2
- 355 00a0 AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 242:Src/stm32f1xx_it.c ****     }else{
- 356              		.loc 1 242 0
- 357 00a2 0021     		movs	r1, #0
- 239:Src/stm32f1xx_it.c ****     if(temp >= 0){
- 358              		.loc 1 239 0
- 359 00a4 43EA0223 		orr	r3, r3, r2, lsl #8
- 360 00a8 1BB2     		sxth	r3, r3
- 361              	.LVL5:
- 240:Src/stm32f1xx_it.c ****       TIM1->CCR3 = temp;
- 362              		.loc 1 240 0
- 363 00aa 002B     		cmp	r3, #0
- 241:Src/stm32f1xx_it.c ****       TIM1->CCR4 = 0;
- 364              		.loc 1 241 0
- 365 00ac 5B4A     		ldr	r2, .L66+24
- 240:Src/stm32f1xx_it.c ****       TIM1->CCR3 = temp;
- 366              		.loc 1 240 0
- 367 00ae 37DB     		blt	.L26
- 241:Src/stm32f1xx_it.c ****       TIM1->CCR4 = 0;
- 368              		.loc 1 241 0
- 369 00b0 D363     		str	r3, [r2, #60]
- 242:Src/stm32f1xx_it.c ****     }else{
- 370              		.loc 1 242 0
- 371 00b2 1164     		str	r1, [r2, #64]
- 372              	.LBE3:
- 373              		.loc 1 304 0
- 374 00b4 38BD     		pop	{r3, r4, r5, pc}
- 375              	.LVL6:
- 376              	.L48:
- 208:Src/stm32f1xx_it.c ****   {
- 377              		.loc 1 208 0 discriminator 1
- 378 00b6 0378     		ldrb	r3, [r0]	@ zero_extendqisi2
- 379 00b8 002B     		cmp	r3, #0
- 380 00ba A7D1     		bne	.L17
-ARM GAS  /tmp/ccZ9uWVr.s 			page 13
+ 626              	.LVL18:
+ 627              	.L35:
+ 286:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 628              		.loc 1 286 0
+ 629 01ca 4FF4C067 		mov	r7, #1536
+ 630 01ce 334E     		ldr	r6, .L70+24
+ 631 01d0 3780     		strh	r7, [r6]	@ movhi
+ 288:Src/stm32f1xx_it.c ****       case 0x57:
+ 632              		.loc 1 288 0
+ 633 01d2 35E7     		b	.L27
+ 634              	.LVL19:
+ 635              	.L34:
+ 280:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 636              		.loc 1 280 0
+ 637 01d4 4FF4A067 		mov	r7, #1280
+ 638 01d8 304E     		ldr	r6, .L70+24
+ 639 01da 3780     		strh	r7, [r6]	@ movhi
+ 282:Src/stm32f1xx_it.c ****       case 0x56:
+ 640              		.loc 1 282 0
+ 641 01dc 30E7     		b	.L27
+ 642              	.LVL20:
+ 643              	.L33:
+ 274:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 644              		.loc 1 274 0
+ 645 01de 4FF48067 		mov	r7, #1024
+ 646 01e2 2E4E     		ldr	r6, .L70+24
+ 647 01e4 3780     		strh	r7, [r6]	@ movhi
+ 276:Src/stm32f1xx_it.c ****       case 0x55:
+ 648              		.loc 1 276 0
+ 649 01e6 2BE7     		b	.L27
+ 650              	.LVL21:
+ 651              	.L32:
+ 268:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 652              		.loc 1 268 0
+ 653 01e8 4FF44077 		mov	r7, #768
+ 654 01ec 2B4E     		ldr	r6, .L70+24
+ 655 01ee 3780     		strh	r7, [r6]	@ movhi
+ 270:Src/stm32f1xx_it.c ****       case 0x54:
+ 656              		.loc 1 270 0
+ 657 01f0 26E7     		b	.L27
+ 658              	.LVL22:
+ 659              	.L31:
+ 262:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 660              		.loc 1 262 0
+ 661 01f2 4FF40077 		mov	r7, #512
+ 662 01f6 294E     		ldr	r6, .L70+24
+ 663 01f8 3780     		strh	r7, [r6]	@ movhi
+ 264:Src/stm32f1xx_it.c ****       case 0x53:
+ 664              		.loc 1 264 0
+ 665 01fa 21E7     		b	.L27
+ 666              	.LVL23:
+ 667              	.L29:
+ 256:Src/stm32f1xx_it.c ****         tx_buf[1] = (steer_temp&0x00ff);
+ 668              		.loc 1 256 0
+ 669 01fc 4FF48077 		mov	r7, #256
+ 670 0200 264E     		ldr	r6, .L70+24
+ 671 0202 3780     		strh	r7, [r6]	@ movhi
+ARM GAS  /tmp/cc7UAIOT.s 			page 22
 
 
- 210:Src/stm32f1xx_it.c ****     count = 0;
- 381              		.loc 1 210 0
- 382 00bc 0121     		movs	r1, #1
- 211:Src/stm32f1xx_it.c ****   }
- 383              		.loc 1 211 0
- 384 00be 534C     		ldr	r4, .L66+8
- 210:Src/stm32f1xx_it.c ****     count = 0;
- 385              		.loc 1 210 0
- 386 00c0 0170     		strb	r1, [r0]
- 211:Src/stm32f1xx_it.c ****   }
- 387              		.loc 1 211 0
- 388 00c2 2370     		strb	r3, [r4]
- 227:Src/stm32f1xx_it.c ****     {
- 389              		.loc 1 227 0
- 390 00c4 D268     		ldr	r2, [r2, #12]
- 391 00c6 552A     		cmp	r2, #85
- 392 00c8 38D0     		beq	.L18
- 393 00ca 514D     		ldr	r5, .L66+12
- 394              	.L19:
- 234:Src/stm32f1xx_it.c ****   /* USER CODE END SPI2_IRQn 0 */
- 395              		.loc 1 234 0
- 396 00cc 0133     		adds	r3, r3, #1
- 397 00ce 2370     		strb	r3, [r4]
- 398 00d0 AAE7     		b	.L24
- 399              	.L20:
- 217:Src/stm32f1xx_it.c ****   {
- 400              		.loc 1 217 0
- 401 00d2 042B     		cmp	r3, #4
- 402 00d4 04D1     		bne	.L22
- 403              	.L50:
- 223:Src/stm32f1xx_it.c ****   }
- 404              		.loc 1 223 0
- 405 00d6 0021     		movs	r1, #0
- 406 00d8 4A4A     		ldr	r2, .L66
- 407 00da 4D4D     		ldr	r5, .L66+12
- 408 00dc D160     		str	r1, [r2, #12]
- 409 00de A0E7     		b	.L21
- 410              	.L22:
- 221:Src/stm32f1xx_it.c ****   {
- 411              		.loc 1 221 0
- 412 00e0 052B     		cmp	r3, #5
- 413 00e2 F8D0     		beq	.L50
- 227:Src/stm32f1xx_it.c ****     {
- 414              		.loc 1 227 0
- 415 00e4 474A     		ldr	r2, .L66
- 416 00e6 D268     		ldr	r2, [r2, #12]
- 417 00e8 552A     		cmp	r2, #85
- 418 00ea 27D0     		beq	.L18
- 419 00ec 484D     		ldr	r5, .L66+12
- 420 00ee 98E7     		b	.L21
- 421              	.LVL7:
- 422              	.L29:
- 423              	.LBB4:
- 254:Src/stm32f1xx_it.c ****     }
- 424              		.loc 1 254 0
- 425 00f0 5B42     		negs	r3, r3
- 426              	.LVL8:
-ARM GAS  /tmp/ccZ9uWVr.s 			page 14
+ 258:Src/stm32f1xx_it.c ****       case 0x52:
+ 672              		.loc 1 258 0
+ 673 0204 1CE7     		b	.L27
+ 674              	.LVL24:
+ 675              	.L45:
+ 676              	.LBE6:
+ 342:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 677              		.loc 1 342 0
+ 678 0206 112A     		cmp	r2, #17
+ 679 0208 1BD1     		bne	.L47
+ 342:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 680              		.loc 1 342 0 is_stmt 0 discriminator 1
+ 681 020a 0529     		cmp	r1, #5
+ 682 020c 7FF41FAF 		bne	.L16
+ 683              	.LVL25:
+ 684              	.LBB7:
+ 345:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x12) && count == 5){
+ 685              		.loc 1 345 0 is_stmt 1
+ 686 0210 0121     		movs	r1, #1
+ 343:Src/stm32f1xx_it.c ****       TIM3->CCR4 = 1500 + temp;
+ 687              		.loc 1 343 0
+ 688 0212 40EA0423 		orr	r3, r0, r4, lsl #8
+ 689              	.LVL26:
+ 344:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 690              		.loc 1 344 0
+ 691 0216 1BB2     		sxth	r3, r3
+ 692 0218 2348     		ldr	r0, .L70+36
+ 693              	.LVL27:
+ 345:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x12) && count == 5){
+ 694              		.loc 1 345 0
+ 695 021a 1E4A     		ldr	r2, .L70+16
+ 344:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 696              		.loc 1 344 0
+ 697 021c 03F2DC53 		addw	r3, r3, #1500
+ 698 0220 0364     		str	r3, [r0, #64]
+ 345:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x12) && count == 5){
+ 699              		.loc 1 345 0
+ 700 0222 1170     		strb	r1, [r2]
+ 701              	.LBE7:
+ 342:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 702              		.loc 1 342 0
+ 703 0224 13E7     		b	.L16
+ 704              	.LVL28:
+ 705              	.L41:
+ 706              	.LBB8:
+ 317:Src/stm32f1xx_it.c ****         TIM1->CCR1 = 0;
+ 707              		.loc 1 317 0
+ 708 0226 4342     		negs	r3, r0
+ 709              	.LVL29:
+ 316:Src/stm32f1xx_it.c ****         TIM1->CCR4 = -temp;
+ 710              		.loc 1 316 0
+ 711 0228 D163     		str	r1, [r2, #60]
+ 317:Src/stm32f1xx_it.c ****         TIM1->CCR1 = 0;
+ 712              		.loc 1 317 0
+ 713 022a 1364     		str	r3, [r2, #64]
+ 318:Src/stm32f1xx_it.c ****         TIM1->CCR2 = -temp;
+ 714              		.loc 1 318 0
+ARM GAS  /tmp/cc7UAIOT.s 			page 23
 
 
- 253:Src/stm32f1xx_it.c ****       TIM1->CCR2 = -temp;
- 427              		.loc 1 253 0
- 428 00f2 5163     		str	r1, [r2, #52]
- 254:Src/stm32f1xx_it.c ****     }
- 429              		.loc 1 254 0
- 430 00f4 9363     		str	r3, [r2, #56]
- 431              	.LBE4:
- 432              		.loc 1 304 0
- 433 00f6 38BD     		pop	{r3, r4, r5, pc}
- 434              	.LVL9:
- 435              	.L55:
- 436              	.LBB5:
- 263:Src/stm32f1xx_it.c ****     TIM3->CCR2 = 1500 + temp;
- 437              		.loc 1 263 0
- 438 00f8 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 439 00fa AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 264:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x14){
- 440              		.loc 1 264 0
- 441 00fc 484A     		ldr	r2, .L66+28
- 263:Src/stm32f1xx_it.c ****     TIM3->CCR2 = 1500 + temp;
- 442              		.loc 1 263 0
- 443 00fe 43EA0123 		orr	r3, r3, r1, lsl #8
- 264:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x14){
- 444              		.loc 1 264 0
- 445 0102 1BB2     		sxth	r3, r3
- 446 0104 03F2DC53 		addw	r3, r3, #1500
- 447 0108 9363     		str	r3, [r2, #56]
- 448              	.LVL10:
- 449              	.LBE5:
- 450              		.loc 1 304 0
- 451 010a 38BD     		pop	{r3, r4, r5, pc}
- 452              	.L53:
- 453              	.LVL11:
- 454              	.LBB6:
- 257:Src/stm32f1xx_it.c ****     TIM3->CCR4 = 1500 + temp;
- 455              		.loc 1 257 0
- 456 010c 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 457 010e AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 258:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x12){
- 458              		.loc 1 258 0
- 459 0110 434A     		ldr	r2, .L66+28
- 257:Src/stm32f1xx_it.c ****     TIM3->CCR4 = 1500 + temp;
- 460              		.loc 1 257 0
- 461 0112 43EA0123 		orr	r3, r3, r1, lsl #8
- 258:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x12){
- 462              		.loc 1 258 0
- 463 0116 1BB2     		sxth	r3, r3
- 464 0118 03F2DC53 		addw	r3, r3, #1500
- 465 011c 1364     		str	r3, [r2, #64]
- 466              	.LVL12:
- 467              	.LBE6:
- 468              		.loc 1 304 0
- 469 011e 38BD     		pop	{r3, r4, r5, pc}
- 470              	.LVL13:
- 471              	.L26:
- 472              	.LBB7:
- 245:Src/stm32f1xx_it.c ****     }
-ARM GAS  /tmp/ccZ9uWVr.s 			page 15
+ 715 022c 5163     		str	r1, [r2, #52]
+ 319:Src/stm32f1xx_it.c ****       }
+ 716              		.loc 1 319 0
+ 717 022e 9363     		str	r3, [r2, #56]
+ 718 0230 A9E7     		b	.L42
+ 719              	.LVL30:
+ 720              	.L44:
+ 721              	.LBE8:
+ 722              	.LBB9:
+ 329:Src/stm32f1xx_it.c ****       }
+ 723              		.loc 1 329 0
+ 724 0232 4342     		negs	r3, r0
+ 725              	.LVL31:
+ 328:Src/stm32f1xx_it.c ****         TIM1->CCR4 = -temp;
+ 726              		.loc 1 328 0
+ 727 0234 D163     		str	r1, [r2, #60]
+ 329:Src/stm32f1xx_it.c ****       }
+ 728              		.loc 1 329 0
+ 729 0236 1364     		str	r3, [r2, #64]
+ 730 0238 A5E7     		b	.L42
+ 731              	.LVL32:
+ 732              	.L46:
+ 733              	.LBE9:
+ 734              	.LBB10:
+ 339:Src/stm32f1xx_it.c ****       }
+ 735              		.loc 1 339 0
+ 736 023a 4342     		negs	r3, r0
+ 737              	.LVL33:
+ 338:Src/stm32f1xx_it.c ****         TIM1->CCR2 = -temp;
+ 738              		.loc 1 338 0
+ 739 023c 5163     		str	r1, [r2, #52]
+ 339:Src/stm32f1xx_it.c ****       }
+ 740              		.loc 1 339 0
+ 741 023e 9363     		str	r3, [r2, #56]
+ 742 0240 A1E7     		b	.L42
+ 743              	.LVL34:
+ 744              	.L47:
+ 745              	.LBE10:
+ 346:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 746              		.loc 1 346 0
+ 747 0242 122A     		cmp	r2, #18
+ 748 0244 0DD1     		bne	.L48
+ 346:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 749              		.loc 1 346 0 is_stmt 0 discriminator 1
+ 750 0246 0529     		cmp	r1, #5
+ 751 0248 7FF401AF 		bne	.L16
+ 752              	.LVL35:
+ 753              	.LBB11:
+ 349:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x13) && count == 5){
+ 754              		.loc 1 349 0 is_stmt 1
+ 755 024c 0121     		movs	r1, #1
+ 347:Src/stm32f1xx_it.c ****       TIM3->CCR3 = 1500 + temp;
+ 756              		.loc 1 347 0
+ 757 024e 40EA0423 		orr	r3, r0, r4, lsl #8
+ 758              	.LVL36:
+ 348:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 759              		.loc 1 348 0
+ARM GAS  /tmp/cc7UAIOT.s 			page 24
 
 
- 473              		.loc 1 245 0
- 474 0120 5B42     		negs	r3, r3
- 475              	.LVL14:
- 244:Src/stm32f1xx_it.c ****       TIM1->CCR4 = -temp;
- 476              		.loc 1 244 0
- 477 0122 D163     		str	r1, [r2, #60]
- 245:Src/stm32f1xx_it.c ****     }
- 478              		.loc 1 245 0
- 479 0124 1364     		str	r3, [r2, #64]
- 480              	.LBE7:
- 481              		.loc 1 304 0
- 482 0126 38BD     		pop	{r3, r4, r5, pc}
- 483              	.LVL15:
- 484              	.L54:
- 485              	.LBB8:
- 260:Src/stm32f1xx_it.c ****     TIM3->CCR3 = 1500 + temp;
- 486              		.loc 1 260 0
- 487 0128 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 488 012a AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 261:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x13){
- 489              		.loc 1 261 0
- 490 012c 3C4A     		ldr	r2, .L66+28
- 260:Src/stm32f1xx_it.c ****     TIM3->CCR3 = 1500 + temp;
- 491              		.loc 1 260 0
- 492 012e 43EA0123 		orr	r3, r3, r1, lsl #8
- 261:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x13){
- 493              		.loc 1 261 0
- 494 0132 1BB2     		sxth	r3, r3
- 495 0134 03F2DC53 		addw	r3, r3, #1500
- 496 0138 D363     		str	r3, [r2, #60]
- 497              	.LVL16:
- 498              	.LBE8:
- 499              		.loc 1 304 0
- 500 013a 38BD     		pop	{r3, r4, r5, pc}
- 501              	.L18:
- 229:Src/stm32f1xx_it.c ****       start = false;
- 502              		.loc 1 229 0
- 503 013c 0023     		movs	r3, #0
- 504 013e 344D     		ldr	r5, .L66+12
- 505 0140 2370     		strb	r3, [r4]
- 230:Src/stm32f1xx_it.c ****     }
- 506              		.loc 1 230 0
- 507 0142 0370     		strb	r3, [r0]
- 508 0144 70E7     		b	.L24
- 509              	.L58:
- 510              	.LVL17:
- 511              	.LBB9:
- 273:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x17){
- 512              		.loc 1 273 0
- 513 0146 4FF08042 		mov	r2, #1073741824
- 272:Src/stm32f1xx_it.c ****     TIM2->CCR3 = 1500 + temp;
- 514              		.loc 1 272 0
- 515 014a 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 516 014c AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 517 014e 43EA0123 		orr	r3, r3, r1, lsl #8
- 273:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x17){
- 518              		.loc 1 273 0
-ARM GAS  /tmp/ccZ9uWVr.s 			page 16
+ 760 0252 1BB2     		sxth	r3, r3
+ 761 0254 1448     		ldr	r0, .L70+36
+ 762              	.LVL37:
+ 349:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x13) && count == 5){
+ 763              		.loc 1 349 0
+ 764 0256 0F4A     		ldr	r2, .L70+16
+ 348:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 765              		.loc 1 348 0
+ 766 0258 03F2DC53 		addw	r3, r3, #1500
+ 767 025c C363     		str	r3, [r0, #60]
+ 349:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x13) && count == 5){
+ 768              		.loc 1 349 0
+ 769 025e 1170     		strb	r1, [r2]
+ 770              	.LBE11:
+ 346:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 771              		.loc 1 346 0
+ 772 0260 F5E6     		b	.L16
+ 773              	.LVL38:
+ 774              	.L48:
+ 350:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 775              		.loc 1 350 0
+ 776 0262 132A     		cmp	r2, #19
+ 777 0264 22D1     		bne	.L49
+ 350:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 778              		.loc 1 350 0 is_stmt 0 discriminator 1
+ 779 0266 0529     		cmp	r1, #5
+ 780 0268 7FF4F1AE 		bne	.L16
+ 781              	.LVL39:
+ 782              	.LBB12:
+ 353:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x14) && count == 5){
+ 783              		.loc 1 353 0 is_stmt 1
+ 784 026c 0121     		movs	r1, #1
+ 351:Src/stm32f1xx_it.c ****       TIM3->CCR2 = 1500 + temp;
+ 785              		.loc 1 351 0
+ 786 026e 40EA0423 		orr	r3, r0, r4, lsl #8
+ 787              	.LVL40:
+ 352:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 788              		.loc 1 352 0
+ 789 0272 1BB2     		sxth	r3, r3
+ 790 0274 0C48     		ldr	r0, .L70+36
+ 791              	.LVL41:
+ 353:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x14) && count == 5){
+ 792              		.loc 1 353 0
+ 793 0276 074A     		ldr	r2, .L70+16
+ 352:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 794              		.loc 1 352 0
+ 795 0278 03F2DC53 		addw	r3, r3, #1500
+ 796 027c 8363     		str	r3, [r0, #56]
+ 353:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x14) && count == 5){
+ 797              		.loc 1 353 0
+ 798 027e 1170     		strb	r1, [r2]
+ 799              	.LBE12:
+ 350:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 800              		.loc 1 350 0
+ 801 0280 E5E6     		b	.L16
+ 802              	.L71:
+ 803 0282 00BF     		.align	2
+ARM GAS  /tmp/cc7UAIOT.s 			page 25
 
 
- 519 0152 1BB2     		sxth	r3, r3
- 520 0154 03F2DC53 		addw	r3, r3, #1500
- 521 0158 D363     		str	r3, [r2, #60]
- 522              	.LVL18:
- 523              	.LBE9:
- 524              		.loc 1 304 0
- 525 015a 38BD     		pop	{r3, r4, r5, pc}
- 526              	.L56:
- 527              	.LVL19:
- 528              	.LBB10:
- 266:Src/stm32f1xx_it.c ****     TIM3->CCR1 = 1500 + temp;
- 529              		.loc 1 266 0
- 530 015c 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 531 015e AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 267:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x15){
- 532              		.loc 1 267 0
- 533 0160 2F4A     		ldr	r2, .L66+28
- 266:Src/stm32f1xx_it.c ****     TIM3->CCR1 = 1500 + temp;
- 534              		.loc 1 266 0
- 535 0162 43EA0123 		orr	r3, r3, r1, lsl #8
- 267:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x15){
- 536              		.loc 1 267 0
- 537 0166 1BB2     		sxth	r3, r3
- 538 0168 03F2DC53 		addw	r3, r3, #1500
- 539 016c 5363     		str	r3, [r2, #52]
- 540              	.LVL20:
- 541              	.LBE10:
- 542              		.loc 1 304 0
- 543 016e 38BD     		pop	{r3, r4, r5, pc}
- 544              	.L57:
- 545              	.LVL21:
- 546              	.LBB11:
- 270:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x16){
- 547              		.loc 1 270 0
- 548 0170 4FF08042 		mov	r2, #1073741824
- 269:Src/stm32f1xx_it.c ****     TIM2->CCR4 = 1500 + temp;
- 549              		.loc 1 269 0
- 550 0174 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 551 0176 AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 552 0178 43EA0123 		orr	r3, r3, r1, lsl #8
- 270:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x16){
- 553              		.loc 1 270 0
- 554 017c 1BB2     		sxth	r3, r3
- 555 017e 03F2DC53 		addw	r3, r3, #1500
- 556 0182 1364     		str	r3, [r2, #64]
- 557              	.LVL22:
- 558              	.LBE11:
- 559              		.loc 1 304 0
- 560 0184 38BD     		pop	{r3, r4, r5, pc}
- 561              	.L59:
- 562              	.LVL23:
- 563              	.LBB12:
- 276:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x18){
- 564              		.loc 1 276 0
- 565 0186 4FF08042 		mov	r2, #1073741824
- 275:Src/stm32f1xx_it.c ****     TIM2->CCR2 = 1500 + temp;
- 566              		.loc 1 275 0
-ARM GAS  /tmp/ccZ9uWVr.s 			page 17
+ 804              	.L70:
+ 805 0284 00380040 		.word	1073756160
+ 806 0288 00000000 		.word	.LANCHOR0
+ 807 028c 00000000 		.word	.LANCHOR2
+ 808 0290 00000000 		.word	.LANCHOR1
+ 809 0294 00000000 		.word	.LANCHOR4
+ 810 0298 00000000 		.word	gray_data_two_final
+ 811 029c 00000000 		.word	.LANCHOR3
+ 812 02a0 002C0140 		.word	1073818624
+ 813 02a4 00000000 		.word	gray_data_final
+ 814 02a8 00040040 		.word	1073742848
+ 815              	.LVL42:
+ 816              	.L49:
+ 354:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 817              		.loc 1 354 0
+ 818 02ac 142A     		cmp	r2, #20
+ 819 02ae 0DD1     		bne	.L50
+ 354:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 820              		.loc 1 354 0 is_stmt 0 discriminator 1
+ 821 02b0 0529     		cmp	r1, #5
+ 822 02b2 7FF4CCAE 		bne	.L16
+ 823              	.LVL43:
+ 824              	.LBB13:
+ 357:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x15) && count == 5){
+ 825              		.loc 1 357 0 is_stmt 1
+ 826 02b6 0121     		movs	r1, #1
+ 355:Src/stm32f1xx_it.c ****       TIM3->CCR1 = 1500 + temp;
+ 827              		.loc 1 355 0
+ 828 02b8 40EA0423 		orr	r3, r0, r4, lsl #8
+ 829              	.LVL44:
+ 356:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 830              		.loc 1 356 0
+ 831 02bc 1BB2     		sxth	r3, r3
+ 832 02be 2648     		ldr	r0, .L72
+ 833              	.LVL45:
+ 357:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x15) && count == 5){
+ 834              		.loc 1 357 0
+ 835 02c0 264A     		ldr	r2, .L72+4
+ 356:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 836              		.loc 1 356 0
+ 837 02c2 03F2DC53 		addw	r3, r3, #1500
+ 838 02c6 4363     		str	r3, [r0, #52]
+ 357:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x15) && count == 5){
+ 839              		.loc 1 357 0
+ 840 02c8 1170     		strb	r1, [r2]
+ 841              	.LBE13:
+ 354:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 842              		.loc 1 354 0
+ 843 02ca C0E6     		b	.L16
+ 844              	.LVL46:
+ 845              	.L50:
+ 358:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 846              		.loc 1 358 0
+ 847 02cc 152A     		cmp	r2, #21
+ 848 02ce 0ED1     		bne	.L51
+ 358:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 849              		.loc 1 358 0 is_stmt 0 discriminator 1
+ARM GAS  /tmp/cc7UAIOT.s 			page 26
 
 
- 567 018a 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 568 018c AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 569 018e 43EA0123 		orr	r3, r3, r1, lsl #8
- 276:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x18){
- 570              		.loc 1 276 0
- 571 0192 1BB2     		sxth	r3, r3
- 572 0194 03F2DC53 		addw	r3, r3, #1500
- 573 0198 9363     		str	r3, [r2, #56]
- 574              	.LVL24:
- 575              	.LBE12:
- 576              		.loc 1 304 0
- 577 019a 38BD     		pop	{r3, r4, r5, pc}
- 578              	.L60:
- 579              	.LVL25:
- 580              	.LBB13:
- 279:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x21){
- 581              		.loc 1 279 0
- 582 019c 4FF08042 		mov	r2, #1073741824
- 278:Src/stm32f1xx_it.c ****     TIM2->CCR1 = 1500 + temp;
- 583              		.loc 1 278 0
- 584 01a0 6978     		ldrb	r1, [r5, #1]	@ zero_extendqisi2
- 585 01a2 AB78     		ldrb	r3, [r5, #2]	@ zero_extendqisi2
- 586 01a4 43EA0123 		orr	r3, r3, r1, lsl #8
- 279:Src/stm32f1xx_it.c ****   }else if(buf[0] == 0x21){
- 587              		.loc 1 279 0
- 588 01a8 1BB2     		sxth	r3, r3
- 589 01aa 03F2DC53 		addw	r3, r3, #1500
- 590 01ae 5363     		str	r3, [r2, #52]
- 591              	.LVL26:
- 592              	.LBE13:
- 593              		.loc 1 304 0
- 594 01b0 38BD     		pop	{r3, r4, r5, pc}
- 595              	.L61:
- 281:Src/stm32f1xx_it.c ****       SPI2->DR = ((gray_data_final&0xff00)>>8);
- 596              		.loc 1 281 0
- 597 01b2 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
- 598 01b4 042B     		cmp	r3, #4
- 599 01b6 12D0     		beq	.L64
- 284:Src/stm32f1xx_it.c ****       SPI2->DR = (gray_data_final&0x00ff);
- 600              		.loc 1 284 0
- 601 01b8 052B     		cmp	r3, #5
- 602 01ba 7FF463AF 		bne	.L16
- 285:Src/stm32f1xx_it.c ****     }
- 603              		.loc 1 285 0
- 604 01be 194A     		ldr	r2, .L66+32
- 605 01c0 104B     		ldr	r3, .L66
- 606 01c2 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 607 01c4 DA60     		str	r2, [r3, #12]
- 608              		.loc 1 304 0
- 609 01c6 38BD     		pop	{r3, r4, r5, pc}
- 610              	.L62:
- 288:Src/stm32f1xx_it.c ****       SPI2->DR = ((gray_data_two_final&0xff00)>>8);
- 611              		.loc 1 288 0
- 612 01c8 2378     		ldrb	r3, [r4]	@ zero_extendqisi2
- 613 01ca 042B     		cmp	r3, #4
- 614 01cc 0DD0     		beq	.L65
- 291:Src/stm32f1xx_it.c ****       SPI2->DR = (gray_data_two_final&0x00ff);
-ARM GAS  /tmp/ccZ9uWVr.s 			page 18
+ 850 02d0 0529     		cmp	r1, #5
+ 851 02d2 7FF4BCAE 		bne	.L16
+ 852              	.LVL47:
+ 853              	.LBB14:
+ 360:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 854              		.loc 1 360 0 is_stmt 1
+ 855 02d6 4FF08045 		mov	r5, #1073741824
+ 361:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x16) && count == 5){
+ 856              		.loc 1 361 0
+ 857 02da 0121     		movs	r1, #1
+ 359:Src/stm32f1xx_it.c ****       TIM2->CCR4 = 1500 + temp;
+ 858              		.loc 1 359 0
+ 859 02dc 40EA0423 		orr	r3, r0, r4, lsl #8
+ 860              	.LVL48:
+ 360:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 861              		.loc 1 360 0
+ 862 02e0 1BB2     		sxth	r3, r3
+ 361:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x16) && count == 5){
+ 863              		.loc 1 361 0
+ 864 02e2 1E4A     		ldr	r2, .L72+4
+ 865              	.LVL49:
+ 360:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 866              		.loc 1 360 0
+ 867 02e4 03F2DC53 		addw	r3, r3, #1500
+ 868 02e8 2B64     		str	r3, [r5, #64]
+ 361:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x16) && count == 5){
+ 869              		.loc 1 361 0
+ 870 02ea 1170     		strb	r1, [r2]
+ 871              	.LBE14:
+ 358:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 872              		.loc 1 358 0
+ 873 02ec AFE6     		b	.L16
+ 874              	.LVL50:
+ 875              	.L51:
+ 362:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 876              		.loc 1 362 0
+ 877 02ee 162A     		cmp	r2, #22
+ 878 02f0 0ED1     		bne	.L52
+ 362:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 879              		.loc 1 362 0 is_stmt 0 discriminator 1
+ 880 02f2 0529     		cmp	r1, #5
+ 881 02f4 7FF4ABAE 		bne	.L16
+ 882              	.LVL51:
+ 883              	.LBB15:
+ 364:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 884              		.loc 1 364 0 is_stmt 1
+ 885 02f8 4FF08045 		mov	r5, #1073741824
+ 365:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x17) && count == 5){
+ 886              		.loc 1 365 0
+ 887 02fc 0121     		movs	r1, #1
+ 363:Src/stm32f1xx_it.c ****       TIM2->CCR3 = 1500 + temp;
+ 888              		.loc 1 363 0
+ 889 02fe 40EA0423 		orr	r3, r0, r4, lsl #8
+ 890              	.LVL52:
+ 364:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 891              		.loc 1 364 0
+ 892 0302 1BB2     		sxth	r3, r3
+ARM GAS  /tmp/cc7UAIOT.s 			page 27
 
 
- 615              		.loc 1 291 0
- 616 01ce 052B     		cmp	r3, #5
- 617 01d0 7FF458AF 		bne	.L16
- 292:Src/stm32f1xx_it.c ****     }
- 618              		.loc 1 292 0
- 619 01d4 144A     		ldr	r2, .L66+36
- 620 01d6 0B4B     		ldr	r3, .L66
- 621 01d8 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
- 622 01da DA60     		str	r2, [r3, #12]
- 623              		.loc 1 304 0
- 624 01dc 38BD     		pop	{r3, r4, r5, pc}
- 625              	.L64:
- 282:Src/stm32f1xx_it.c ****     }
- 626              		.loc 1 282 0
- 627 01de 114B     		ldr	r3, .L66+32
- 628 01e0 084A     		ldr	r2, .L66
- 629 01e2 1B88     		ldrh	r3, [r3]
- 630 01e4 1B0A     		lsrs	r3, r3, #8
- 631 01e6 D360     		str	r3, [r2, #12]
- 632              		.loc 1 304 0
- 633 01e8 38BD     		pop	{r3, r4, r5, pc}
- 634              	.L65:
- 289:Src/stm32f1xx_it.c ****     }
- 635              		.loc 1 289 0
- 636 01ea 0F4B     		ldr	r3, .L66+36
- 637 01ec 054A     		ldr	r2, .L66
- 638 01ee 1B88     		ldrh	r3, [r3]
- 639 01f0 1B0A     		lsrs	r3, r3, #8
- 640 01f2 D360     		str	r3, [r2, #12]
- 641              		.loc 1 304 0
- 642 01f4 38BD     		pop	{r3, r4, r5, pc}
- 643              	.L63:
- 296:Src/stm32f1xx_it.c ****     }
- 644              		.loc 1 296 0
- 645 01f6 084B     		ldr	r3, .L66+20
- 646 01f8 024A     		ldr	r2, .L66
- 647 01fa 1B88     		ldrh	r3, [r3]
- 648 01fc 1B0A     		lsrs	r3, r3, #8
- 649 01fe D360     		str	r3, [r2, #12]
- 650              		.loc 1 304 0
- 651 0200 38BD     		pop	{r3, r4, r5, pc}
- 652              	.L67:
- 653 0202 00BF     		.align	2
- 654              	.L66:
- 655 0204 00380040 		.word	1073756160
- 656 0208 00000000 		.word	.LANCHOR0
- 657 020c 00000000 		.word	.LANCHOR1
- 658 0210 00000000 		.word	.LANCHOR2
- 659 0214 00000000 		.word	hspi2
- 660 0218 00000000 		.word	other_data_final
- 661 021c 002C0140 		.word	1073818624
- 662 0220 00040040 		.word	1073742848
- 663 0224 00000000 		.word	gray_data_final
- 664 0228 00000000 		.word	gray_data_two_final
- 665              		.cfi_endproc
- 666              	.LFE75:
- 668              		.section	.bss.buf.7222,"aw",%nobits
-ARM GAS  /tmp/ccZ9uWVr.s 			page 19
+ 365:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x17) && count == 5){
+ 893              		.loc 1 365 0
+ 894 0304 154A     		ldr	r2, .L72+4
+ 895              	.LVL53:
+ 364:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 896              		.loc 1 364 0
+ 897 0306 03F2DC53 		addw	r3, r3, #1500
+ 898 030a EB63     		str	r3, [r5, #60]
+ 365:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x17) && count == 5){
+ 899              		.loc 1 365 0
+ 900 030c 1170     		strb	r1, [r2]
+ 901              	.LBE15:
+ 362:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 902              		.loc 1 362 0
+ 903 030e 9EE6     		b	.L16
+ 904              	.LVL54:
+ 905              	.L52:
+ 366:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 906              		.loc 1 366 0
+ 907 0310 172A     		cmp	r2, #23
+ 908 0312 0ED1     		bne	.L53
+ 366:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 909              		.loc 1 366 0 is_stmt 0 discriminator 1
+ 910 0314 0529     		cmp	r1, #5
+ 911 0316 7FF49AAE 		bne	.L16
+ 912              	.LVL55:
+ 913              	.LBB16:
+ 368:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 914              		.loc 1 368 0 is_stmt 1
+ 915 031a 4FF08045 		mov	r5, #1073741824
+ 369:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x18) && count == 5){
+ 916              		.loc 1 369 0
+ 917 031e 0121     		movs	r1, #1
+ 367:Src/stm32f1xx_it.c ****       TIM2->CCR2 = 1500 + temp;
+ 918              		.loc 1 367 0
+ 919 0320 40EA0423 		orr	r3, r0, r4, lsl #8
+ 920              	.LVL56:
+ 368:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 921              		.loc 1 368 0
+ 922 0324 1BB2     		sxth	r3, r3
+ 369:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x18) && count == 5){
+ 923              		.loc 1 369 0
+ 924 0326 0D4A     		ldr	r2, .L72+4
+ 925              	.LVL57:
+ 368:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 926              		.loc 1 368 0
+ 927 0328 03F2DC53 		addw	r3, r3, #1500
+ 928 032c AB63     		str	r3, [r5, #56]
+ 369:Src/stm32f1xx_it.c ****     }else if((buf[0] == 0x18) && count == 5){
+ 929              		.loc 1 369 0
+ 930 032e 1170     		strb	r1, [r2]
+ 931              	.LBE16:
+ 366:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 932              		.loc 1 366 0
+ 933 0330 8DE6     		b	.L16
+ 934              	.LVL58:
+ 935              	.L53:
+ARM GAS  /tmp/cc7UAIOT.s 			page 28
 
 
- 669              		.align	2
- 670              		.set	.LANCHOR2,. + 0
- 673              	buf.7222:
- 674 0000 00000000 		.space	5
- 674      00
- 675              		.section	.bss.count.7223,"aw",%nobits
- 676              		.set	.LANCHOR1,. + 0
- 679              	count.7223:
- 680 0000 00       		.space	1
- 681              		.section	.bss.start.7221,"aw",%nobits
- 682              		.set	.LANCHOR0,. + 0
- 685              	start.7221:
- 686 0000 00       		.space	1
- 687              		.text
- 688              	.Letext0:
- 689              		.file 2 "Inc/main.h"
- 690              		.file 3 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/machine/_default_type
- 691              		.file 4 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/_stdint.h"
- 692              		.file 5 "Drivers/CMSIS/Include/core_cm3.h"
- 693              		.file 6 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
- 694              		.file 7 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
- 695              		.file 8 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/lock.h"
- 696              		.file 9 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/_types.h"
- 697              		.file 10 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1/include/stddef
- 698              		.file 11 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/reent.h"
- 699              		.file 12 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
- 700              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
- 701              		.file 14 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h"
- 702              		.file 15 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
- 703              		.file 16 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h"
-ARM GAS  /tmp/ccZ9uWVr.s 			page 20
+ 370:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 936              		.loc 1 370 0
+ 937 0332 182A     		cmp	r2, #24
+ 938 0334 7FF48BAE 		bne	.L16
+ 370:Src/stm32f1xx_it.c ****       int16_t temp = (buf[1]<<8 | buf[2]);
+ 939              		.loc 1 370 0 is_stmt 0 discriminator 1
+ 940 0338 0529     		cmp	r1, #5
+ 941 033a 7FF488AE 		bne	.L16
+ 942              	.LVL59:
+ 943              	.LBB17:
+ 372:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 944              		.loc 1 372 0 is_stmt 1
+ 945 033e 4FF08045 		mov	r5, #1073741824
+ 373:Src/stm32f1xx_it.c ****     }
+ 946              		.loc 1 373 0
+ 947 0342 0121     		movs	r1, #1
+ 371:Src/stm32f1xx_it.c ****       TIM2->CCR1 = 1500 + temp;
+ 948              		.loc 1 371 0
+ 949 0344 40EA0423 		orr	r3, r0, r4, lsl #8
+ 950              	.LVL60:
+ 372:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 951              		.loc 1 372 0
+ 952 0348 1BB2     		sxth	r3, r3
+ 373:Src/stm32f1xx_it.c ****     }
+ 953              		.loc 1 373 0
+ 954 034a 044A     		ldr	r2, .L72+4
+ 955              	.LVL61:
+ 372:Src/stm32f1xx_it.c ****       data_use_r = 1;
+ 956              		.loc 1 372 0
+ 957 034c 03F2DC53 		addw	r3, r3, #1500
+ 958 0350 6B63     		str	r3, [r5, #52]
+ 373:Src/stm32f1xx_it.c ****     }
+ 959              		.loc 1 373 0
+ 960 0352 1170     		strb	r1, [r2]
+ 961              	.LBE17:
+ 962              		.loc 1 445 0
+ 963 0354 7BE6     		b	.L16
+ 964              	.L73:
+ 965 0356 00BF     		.align	2
+ 966              	.L72:
+ 967 0358 00040040 		.word	1073742848
+ 968 035c 00000000 		.word	.LANCHOR4
+ 969              		.cfi_endproc
+ 970              	.LFE75:
+ 972              		.section	.bss.buf.7225,"aw",%nobits
+ 973              		.align	2
+ 974              		.set	.LANCHOR2,. + 0
+ 977              	buf.7225:
+ 978 0000 00000000 		.space	5
+ 978      00
+ 979              		.section	.bss.count,"aw",%nobits
+ 980              		.set	.LANCHOR1,. + 0
+ 983              	count:
+ 984 0000 00       		.space	1
+ 985              		.section	.bss.data_use_r.7224,"aw",%nobits
+ 986              		.set	.LANCHOR4,. + 0
+ 989              	data_use_r.7224:
+ARM GAS  /tmp/cc7UAIOT.s 			page 29
+
+
+ 990 0000 00       		.space	1
+ 991              		.section	.bss.start.7223,"aw",%nobits
+ 992              		.set	.LANCHOR0,. + 0
+ 995              	start.7223:
+ 996 0000 00       		.space	1
+ 997              		.section	.data.tx_buf.7226,"aw",%progbits
+ 998              		.align	2
+ 999              		.set	.LANCHOR3,. + 0
+ 1002              	tx_buf.7226:
+ 1003 0000 01       		.byte	1
+ 1004 0001 02       		.byte	2
+ 1005              		.text
+ 1006              	.Letext0:
+ 1007              		.file 2 "Inc/main.h"
+ 1008              		.file 3 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/machine/_default_type
+ 1009              		.file 4 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/_stdint.h"
+ 1010              		.file 5 "Drivers/CMSIS/Include/core_cm3.h"
+ 1011              		.file 6 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/system_stm32f1xx.h"
+ 1012              		.file 7 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xe.h"
+ 1013              		.file 8 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/lock.h"
+ 1014              		.file 9 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/_types.h"
+ 1015              		.file 10 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/lib/gcc/arm-none-eabi/7.3.1/include/stddef
+ 1016              		.file 11 "/usr/local/gcc-arm-none-eabi-7-2018-q2-update/arm-none-eabi/include/sys/reent.h"
+ 1017              		.file 12 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 1018              		.file 13 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 1019              		.file 14 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h"
+ 1020              		.file 15 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h"
+ 1021              		.file 16 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_cortex.h"
+ARM GAS  /tmp/cc7UAIOT.s 			page 30
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 stm32f1xx_it.c
-     /tmp/ccZ9uWVr.s:16     .text.NMI_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:24     .text.NMI_Handler:0000000000000000 NMI_Handler
-     /tmp/ccZ9uWVr.s:38     .text.HardFault_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:46     .text.HardFault_Handler:0000000000000000 HardFault_Handler
-     /tmp/ccZ9uWVr.s:60     .text.MemManage_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:68     .text.MemManage_Handler:0000000000000000 MemManage_Handler
-     /tmp/ccZ9uWVr.s:82     .text.BusFault_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:90     .text.BusFault_Handler:0000000000000000 BusFault_Handler
-     /tmp/ccZ9uWVr.s:104    .text.UsageFault_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:112    .text.UsageFault_Handler:0000000000000000 UsageFault_Handler
-     /tmp/ccZ9uWVr.s:126    .text.SVC_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:134    .text.SVC_Handler:0000000000000000 SVC_Handler
-     /tmp/ccZ9uWVr.s:145    .text.DebugMon_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:153    .text.DebugMon_Handler:0000000000000000 DebugMon_Handler
-     /tmp/ccZ9uWVr.s:164    .text.PendSV_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:172    .text.PendSV_Handler:0000000000000000 PendSV_Handler
-     /tmp/ccZ9uWVr.s:183    .text.SysTick_Handler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:191    .text.SysTick_Handler:0000000000000000 SysTick_Handler
-     /tmp/ccZ9uWVr.s:219    .text.SPI2_IRQHandler:0000000000000000 $t
-     /tmp/ccZ9uWVr.s:227    .text.SPI2_IRQHandler:0000000000000000 SPI2_IRQHandler
-     /tmp/ccZ9uWVr.s:655    .text.SPI2_IRQHandler:0000000000000204 $d
-     /tmp/ccZ9uWVr.s:669    .bss.buf.7222:0000000000000000 $d
-     /tmp/ccZ9uWVr.s:673    .bss.buf.7222:0000000000000000 buf.7222
-     /tmp/ccZ9uWVr.s:679    .bss.count.7223:0000000000000000 count.7223
-     /tmp/ccZ9uWVr.s:680    .bss.count.7223:0000000000000000 $d
-     /tmp/ccZ9uWVr.s:685    .bss.start.7221:0000000000000000 start.7221
-     /tmp/ccZ9uWVr.s:686    .bss.start.7221:0000000000000000 $d
+     /tmp/cc7UAIOT.s:16     .text.NMI_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:24     .text.NMI_Handler:0000000000000000 NMI_Handler
+     /tmp/cc7UAIOT.s:38     .text.HardFault_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:46     .text.HardFault_Handler:0000000000000000 HardFault_Handler
+     /tmp/cc7UAIOT.s:60     .text.MemManage_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:68     .text.MemManage_Handler:0000000000000000 MemManage_Handler
+     /tmp/cc7UAIOT.s:82     .text.BusFault_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:90     .text.BusFault_Handler:0000000000000000 BusFault_Handler
+     /tmp/cc7UAIOT.s:104    .text.UsageFault_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:112    .text.UsageFault_Handler:0000000000000000 UsageFault_Handler
+     /tmp/cc7UAIOT.s:126    .text.SVC_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:134    .text.SVC_Handler:0000000000000000 SVC_Handler
+     /tmp/cc7UAIOT.s:145    .text.DebugMon_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:153    .text.DebugMon_Handler:0000000000000000 DebugMon_Handler
+     /tmp/cc7UAIOT.s:164    .text.PendSV_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:172    .text.PendSV_Handler:0000000000000000 PendSV_Handler
+     /tmp/cc7UAIOT.s:183    .text.SysTick_Handler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:191    .text.SysTick_Handler:0000000000000000 SysTick_Handler
+     /tmp/cc7UAIOT.s:219    .text.SPI2_IRQHandler:0000000000000000 $t
+     /tmp/cc7UAIOT.s:227    .text.SPI2_IRQHandler:0000000000000000 SPI2_IRQHandler
+     /tmp/cc7UAIOT.s:527    .text.SPI2_IRQHandler:0000000000000160 $d
+     /tmp/cc7UAIOT.s:536    .text.SPI2_IRQHandler:0000000000000168 $t
+     /tmp/cc7UAIOT.s:805    .text.SPI2_IRQHandler:0000000000000284 $d
+     /tmp/cc7UAIOT.s:818    .text.SPI2_IRQHandler:00000000000002ac $t
+     /tmp/cc7UAIOT.s:967    .text.SPI2_IRQHandler:0000000000000358 $d
+     /tmp/cc7UAIOT.s:973    .bss.buf.7225:0000000000000000 $d
+     /tmp/cc7UAIOT.s:977    .bss.buf.7225:0000000000000000 buf.7225
+     /tmp/cc7UAIOT.s:983    .bss.count:0000000000000000 count
+     /tmp/cc7UAIOT.s:984    .bss.count:0000000000000000 $d
+     /tmp/cc7UAIOT.s:989    .bss.data_use_r.7224:0000000000000000 data_use_r.7224
+     /tmp/cc7UAIOT.s:990    .bss.data_use_r.7224:0000000000000000 $d
+     /tmp/cc7UAIOT.s:995    .bss.start.7223:0000000000000000 start.7223
+     /tmp/cc7UAIOT.s:996    .bss.start.7223:0000000000000000 $d
+     /tmp/cc7UAIOT.s:998    .data.tx_buf.7226:0000000000000000 $d
+     /tmp/cc7UAIOT.s:1002   .data.tx_buf.7226:0000000000000000 tx_buf.7226
 
 UNDEFINED SYMBOLS
 HAL_IncTick
 HAL_SYSTICK_IRQHandler
-HAL_SPI_IRQHandler
-hspi2
-other_data_final
-gray_data_final
 gray_data_two_final
+gray_data_final

@@ -195,47 +195,188 @@ void SysTick_Handler(void)
 /**
 * @brief This function handles SPI2 global interrupt.
 */
+static uint8_t count =0;
 void SPI2_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI2_IRQn 0 */
   extern uint16_t gray_data_final;
   extern uint16_t gray_data_two_final;
   extern uint16_t other_data_final;
-  
+  uint8_t other_status_final = 0x11;
   static bool start=false;
+  static uint8_t data_use_r = 0x00;    //接受执行返回
   static uint8_t buf[5] = {0};
-  static uint8_t count =0;
-  if((SPI2->DR == 0xaa) && (start == false))
-  {
+  static uint8_t tx_buf[2] = {0x01,0x02};
+  
+  if((SPI2->DR == 0xaa) && (start == false)){     //收到头0xaa
     start = true;
+    count ++;
+    SPI2->DR = other_status_final;                              //可替换成程序运行开关状态，发送在第二位
+  }else if((start == true) && (count == 1)){      //收到控制位，代表后两位要发的东西
+    buf[0] = SPI2->DR;
+    SPI2->DR = other_status_final;
+    count ++;
+  }else if((start == true) && (count == 2)){      //收到高8位，发送控制位
+    buf[1] = SPI2->DR;
+    SPI2->DR = buf[0];
+    count ++;
+  }else if((start == true) && (count == 3)){      //收到低8位，发送数据位
+    buf[2] = SPI2->DR;
+    SPI2->DR = tx_buf[0];
+    count ++;
+  }else if((start == true) && (count == 4)){      //发送数据位
+    SPI2->DR = tx_buf[1];
+    count ++;
+  }else if((start == true) && (count == 5)){      //发送数据校验
+    SPI2->DR = (tx_buf[0] + tx_buf[1]) & 0xff;
+    count ++;
+  }else if((start == true) && (count == 6)){      //发送数据使用情况
+    buf[3] = SPI2->DR;
+    SPI2->DR = data_use_r;
+    count ++;
+  }else{
     count = 0;
+    start = false;
   }
-  if((count >= 1)&&(count <= 3))
-  {
-    buf[count-1] = SPI2->DR;
-  }
-  else if(count == 4)
-  {
-    SPI2->DR = 0;
-  }
-  else if(count == 5)
-  {
-    SPI2->DR = 0;
-  }
-  else
-  {
-    if(SPI2->DR == 0x55)
-    {
-      count = 0;
-      start = false;
+
+  uint8_t temp_num = 0xaa + buf[0] +buf[1] +buf[2];
+  
+  if(buf[0] == 0x21){
+    tx_buf[0] = ((gray_data_final&0xff00)>>8);
+    tx_buf[1] = (gray_data_final&0x00ff);
+  }else if(buf[0] == 0x22){
+    tx_buf[0] = ((gray_data_two_final&0xff00)>>8);
+    tx_buf[1] = (gray_data_two_final&0x00ff);
+  }else if((buf[0]&0xf0) == 0x50){
+    uint16_t steer_temp = 0x00;
+    switch(buf[0]){
+      case 0x51:
+        steer_temp = 0x01;
+        //steer_temp = TIM3->CCR4 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x52:
+        steer_temp = 0x02;
+        //steer_temp = TIM3->CCR3 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x53:
+        steer_temp = 0x03;
+        //steer_temp = TIM3->CCR2 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x54:
+        steer_temp = 0x04;
+        //steer_temp = TIM3->CCR1 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x55:
+        steer_temp = 0x05;
+        //steer_temp = TIM2->CCR4 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x56:
+        steer_temp = 0x06;
+        //steer_temp = TIM2->CCR3 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x57:
+        steer_temp = 0x07;
+        //steer_temp = TIM2->CCR2 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
+      case 0x58:
+        steer_temp = 0x08;
+        //steer_temp = TIM2->CCR1 - 1500;
+        tx_buf[0] = ((steer_temp&0xff00)>>8);
+        tx_buf[1] = (steer_temp&0x00ff);
+        break;
     }
   }
-  if(start == true)
-    count ++;
+
+  if(count == 1){
+    data_use_r = 0;
+  }
+  if(temp_num == buf[3]){
+    if((buf[0] == 0x05) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      if(temp >= 0){
+        TIM1->CCR3 = temp;
+        TIM1->CCR4 = 0;
+        TIM1->CCR1 = temp;
+        TIM1->CCR2 = 0;
+      }else{
+        TIM1->CCR3 = 0;
+        TIM1->CCR4 = -temp;
+        TIM1->CCR1 = 0;
+        TIM1->CCR2 = -temp;
+      }
+      data_use_r = 1;
+    }else if((buf[0] == 0x01) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      if(temp >= 0){
+        TIM1->CCR3 = temp;
+        TIM1->CCR4 = 0;
+      }else{
+        TIM1->CCR3 = 0;
+        TIM1->CCR4 = -temp;
+      }
+      data_use_r = 1;
+    }else if((buf[0] == 0x02) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      if(temp >= 0){
+        TIM1->CCR1 = temp;
+        TIM1->CCR2 = 0;
+      }else{
+        TIM1->CCR1 = 0;
+        TIM1->CCR2 = -temp;
+      }
+      data_use_r = 1;
+    }else if((buf[0] == 0x11) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM3->CCR4 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x12) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM3->CCR3 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x13) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM3->CCR2 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x14) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM3->CCR1 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x15) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM2->CCR4 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x16) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM2->CCR3 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x17) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM2->CCR2 = 1500 + temp;
+      data_use_r = 1;
+    }else if((buf[0] == 0x18) && count == 5){
+      int16_t temp = (buf[1]<<8 | buf[2]);
+      TIM2->CCR1 = 1500 + temp;
+      data_use_r = 1;
+    }
+  }
   /* USER CODE END SPI2_IRQn 0 */
-  HAL_SPI_IRQHandler(&hspi2);
+  //HAL_SPI_IRQHandler(&hspi2);
   /* USER CODE BEGIN SPI2_IRQn 1 */
-  if(buf[0] == 0x01){
+  /*if(buf[0] == 0x01){
     int16_t temp = (buf[1]<<8 | buf[2]);
     if(temp >= 0){
       TIM1->CCR3 = temp;
@@ -299,7 +440,7 @@ void SPI2_IRQHandler(void)
       SPI2->DR = (other_data_final&0x00ff);
     }
   }
-  
+  */
   /* USER CODE END SPI2_IRQn 1 */
 }
 
