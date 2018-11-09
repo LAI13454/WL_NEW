@@ -5,7 +5,9 @@
 		"D":40
 	},
 	"Speed":{
-		"Set":450,
+		"SetH":450,
+		"SetM":300,
+		"SetL":200,
 		"Ratio":0.8,
 		"Speed_L":200
 	},

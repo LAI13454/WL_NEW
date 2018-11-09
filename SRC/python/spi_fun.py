@@ -1,4 +1,4 @@
-#from spi_com import SPI_COM
+from spi_com import SPI_COM
 import json
 import time
 class SPI_FUN:
@@ -15,5 +15,15 @@ class SPI_FUN:
             self.steer_val_6 = setting["Steer_DEF"]["6"]
             self.steer_speed = setting["Steer_DEF"]["Speed"]
         else:
-
+            pass
+    def get_gray(self):             #获取寻线灰度数据
+        return self.spi_com.gray()
+    def get_gray_two(self):
+        return self.spi_com.gray_two()      #获取右侧灰度数据
+    def set_steer_turn(self,val):
+        return self.spi_com.steer_turn(val)    #设置舵机转向值
+    def set_motor_left(self,val):           
+        self.spi_com.motor(1,val)           #设置左侧电机值
+    def set_motor_right(self,val):
+        self.spi_com.motor(2,val)           #设置右侧电机值
         

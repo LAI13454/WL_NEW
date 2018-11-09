@@ -32,9 +32,10 @@ class SPI_COM:      #树莓派与STM32通信类
             if(r_l[7] != 1):
                 #print(l)
                 #print(r_l)
-                print("SPI通信错误")
+                #print("SPI通信错误--电机")
                 while_flag = True
             else:
+                #print("SPI通信正确--电机")
                 while_flag = False
         #print(l)
         #print(r_l)
@@ -65,7 +66,7 @@ class SPI_COM:      #树莓派与STM32通信类
             if(r_l[7] != 1):
                 #print(l)
                 #print(r_l)
-                print("SPI通信错误")
+                #print("SPI通信错误--舵机")
                 while_flag = True
             else:
                 while_flag = False
@@ -111,7 +112,7 @@ class SPI_COM:      #树莓派与STM32通信类
             if(((r_l[4] + r_l[5]) & 0xff) != r_l[6]):
                 #print(l)
                 #print(r_l)
-                print("SPI通信错误")
+                #print("SPI通信错误")
                 while_flag = True
             else:
                 while_flag = False
@@ -145,7 +146,7 @@ class SPI_COM:      #树莓派与STM32通信类
             if(((r_l[4] + r_l[5]) & 0xff) != r_l[6]):
                 #print(l)
                 #print(r_l)
-                print("SPI通信错误")
+                #print("SPI通信错误")
                 while_flag = True
             else:
                 while_flag = False
@@ -158,9 +159,9 @@ class SPI_COM:      #树莓派与STM32通信类
                 val.append(0)
         #print(l)
         #print(r_l)
-        #print(val)
         val.reverse()
+        #print(val)
         return val
 
 spi_com = SPI_COM()
-spi_com.gray_two()
+spi_com.motor(5,200)
