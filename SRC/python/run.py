@@ -27,7 +27,7 @@ class RUN:
                 right = 11
             elif status == 2:
                 left == 11
-        print(left,right)
+        #print(left,right)
         return (left - right)
     def turn_pid(self,dif):
         out = self.KP * dif + self.KD * (dif - self.dif_last)

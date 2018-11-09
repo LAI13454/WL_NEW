@@ -26,4 +26,6 @@ class SPI_FUN:
         self.spi_com.motor(1,val)           #设置左侧电机值
     def set_motor_right(self,val):
         self.spi_com.motor(2,val)           #设置右侧电机值
+    def set_motor(self,val):
+        self.spi_com.motor(5,val)           #设置两个电机值
         
