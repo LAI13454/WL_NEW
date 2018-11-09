@@ -21,7 +21,7 @@ class SPI_FUN:
     def get_gray_two(self):
         return self.spi_com.gray_two()      #获取右侧灰度数据
     def set_steer_turn(self,val):
-        return self.spi_com.steer_turn(val)    #设置舵机转向值
+        return self.spi_com.steer_turn(val-40)    #设置舵机转向值
     def set_motor_left(self,val):           
         self.spi_com.motor(1,val)           #设置左侧电机值
     def set_motor_right(self,val):

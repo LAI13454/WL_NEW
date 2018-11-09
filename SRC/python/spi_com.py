@@ -163,5 +163,5 @@ class SPI_COM:      #树莓派与STM32通信类
         #print(val)
         return val
 
-spi_com = SPI_COM()
-spi_com.motor(5,200)
+#spi_com = SPI_COM()
+#spi_com.motor(5,200)

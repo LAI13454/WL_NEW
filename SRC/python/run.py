@@ -24,9 +24,13 @@ class RUN:
                 break
         if((left == 0) and (right == 0)):
             if status == 1:
-                right = 11
+                right = 15
             elif status == 2:
-                left == 11
+                left == 15
+        elif left == 0:
+            left = right
+        elif right == 0:
+            right = left
         #print(left,right)
         return (left - right)
     def turn_pid(self,dif):

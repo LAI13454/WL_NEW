@@ -13,6 +13,7 @@ oled = OLED()                   #OLED类初始化
 run = RUN()                     #RUN类初始化，包括PID，灰度数据转偏移量
 
 gray_data = []                  #灰度数据
+gray_data_two = []              #灰度侧面数据
 g_speed_set = 0                 #当前速度设置值
 speed_set_status = 0            #速度设置状态控制位，设置为0停止
 
@@ -22,6 +23,7 @@ speed_setL = 0
 
 def run_fun():
     global gray_data
+    global gray_data_two
     global g_speed_set
     global speed_set_status
     global speed_setH
@@ -32,13 +34,15 @@ def run_fun():
     speed_setH = setting["Speed"]["SetH"]
     speed_setM = setting["Speed"]["SetM"]
     speed_setL = setting["Speed"]["SetL"]
-    speed_ratio = setting["Speed"]["Ratio"]
+    speed_ratio_B = setting["Speed"]["Ratio_B"]
+    speed_ratio_S = setting["Speed"]["Ratio_S"]
     g_speed_set = speed_setH
     time_last = 0
     print("速度设置高速:%d,中速:%d,低速:%d"%(speed_setH,speed_setM,speed_setL))
     
     while True:
         gray_data = spi_fun.get_gray()      #获取寻线传感器的数据
+        gray_data_two = spi_fun.get_gray_two()      #获取侧面传感器的数据
         if(((time.time()-time_last) > 0.02) and (speed_set_status != 0)):   #20ms进行一次PID运算
             time_last = time.time()
             #print(gray_data)
@@ -49,9 +53,14 @@ def run_fun():
             elif speed_set_status == 3:
                 dif = run.gray_dif(gray_data,2)         #全白时，偏移向右
             turn_out = run.turn_pid(dif)
-            spi_fun.set_motor_left(int(g_speed_set+turn_out*speed_ratio))
-            spi_fun.set_motor_right(int(g_speed_set-turn_out*speed_ratio))
-            spi_fun.set_steer_turn(turn_out)
+            if speed_set_status != 4:
+                spi_fun.set_motor_left(int(g_speed_set+turn_out*speed_ratio_S))
+                spi_fun.set_motor_right(int(g_speed_set-turn_out*speed_ratio_S))
+                spi_fun.set_steer_turn(turn_out)
+            else:
+                spi_fun.set_motor_left(int(g_speed_set+turn_out*speed_ratio_B))
+                spi_fun.set_motor_right(int(g_speed_set-turn_out*speed_ratio_B))
+                spi_fun.set_steer_turn(0)
         else:
             while((time.time()-time_last) > 0.02):
                 break
@@ -69,20 +78,73 @@ spi_fun.set_steer_turn(0)
 time.sleep(1)
 while True:
     try:
-        walk_path_count = 0     #行走点位计数，知道自己走到哪一步，流程控制
         while True:             #当走到终点时退出循环
-            if walk_path_count == 0:  #开机固定一段时间往前走,结束流程控制转为正常寻线模式
-                print("STEP:"+str(walk_path_count)+str("直线行驶"))
-                speed_set_status = 0    #关闭PID寻线控制
-                print(speed_setM)
-                spi_fun.set_motor(speed_setM)         
-                spi_fun.set_steer_turn(0)   
-                time.sleep(1)
-                speed_set_status = 2    #切换到第二种寻线模式
-                walk_path_count = walk_path_count + 1
-            else:
-                while True:
-                    pass
+            print("STEP:"+str("直线行驶"))
+            speed_set_status = 0    #关闭PID寻线控制
+            print(speed_setM)
+            spi_fun.set_motor(speed_setM)         
+            spi_fun.set_steer_turn(0)
+            time.sleep(1)
+            speed_set_status = 2    #切换到第二种寻线模式
+
+            print("STEP:"+str("上坡第一次停车准备"))
+            while(not((gray_data_two[1] and gray_data_two[2]) and (gray_data_two[9] and gray_data_two[10]) and (not(gray_data_two[4] or gray_data_two[6] or gray_data_two[5])))):
+                pass
+            speed_set_status = 0    #停车
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(1)
+
+            print("STEP:"+str("倒车"))
+            spi_fun.set_motor(int(-speed_setL))
+            spi_fun.set_steer_turn(0)
+            count = 0    #当右边传感器检测到第0个点为黑线时并且整条只有一个黑点时，停车
+            while(not((gray_data_two[0] == 1) and count == 1)):
+                count = 0
+                for i in gray_data_two:
+                    if(i == 1):
+                        count = count + 1
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(5)
+
+            print("STEP:"+str("第二个抓取点"))
+            g_speed_set = speed_setL
+            speed_set_status = 4
+            while(not((gray_data_two[6] == 1) and (gray_data_two[7] == 1))):
+                pass
+            speed_set_status = 0
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(5)
+            
+            print("STEP:"+str("第三个抓取点"))
+            g_speed_set = speed_setL
+            speed_set_status = 4
+            count = 0    
+            while(not((gray_data_two[5] == 1) and (not(gray_data_two[6])) and count == 2)):
+                count = 0
+                for i in gray_data_two:
+                    if(i == 1):
+                        count = count + 1
+
+            speed_set_status = 0
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(5)
+            
+            print("STEP:"+str("第四个抓取点"))
+            g_speed_set = speed_setL
+            speed_set_status = 4
+            while(not((gray_data_two[10] == 1) and (gray_data_two[11] == 1))):
+                pass
+            speed_set_status = 0
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(5)
+
+            while True:
+                pass
     except KeyboardInterrupt:
         speed_set_status = 0
         spi_fun.set_steer_turn(0)
