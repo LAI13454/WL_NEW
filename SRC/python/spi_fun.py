@@ -97,14 +97,75 @@ class SPI_FUN:
         for i in range(0,len(l[temp_max_num])):
             #print(l[0])
             for k in range(0,2):
-                if(val[k] != self.steer_val[k+1]):
+                if(val[k] != self.steer_val[num[k]]):
                     self.spi_com.steer(num[k],l[k][i])
             time.sleep(time_val * self.steer_speed)
         for i in range(0,2):
             self.steer_val[num[i]] = val[i]
         print(l)
         print(len(l[temp_max_num]),len(l[1]))
-        
+
+
+    def set_steer_time_3(self,num_1,val_1,num_2,val_2,num_3,val_3,time_val):
+        temp_time = []
+        num = []
+        val = []
+        num.append(num_1)
+        num.append(num_2)
+        num.append(num_3)
+        val.append(val_1)
+        val.append(val_2)
+        val.append(val_3)
+        for i in range(0,3):
+            temp_time.append(abs(val[i]-self.steer_val[num[i]]))    #找出每个数偏差
+        print(temp_time)
+        temp_max_num = temp_time.index(max(temp_time))              #找出差距最大的索引号
+        print(temp_max_num)
+        l = []
+        for i in range(0,3):
+            l.append([])
+        if val[temp_max_num] < self.steer_val[num[temp_max_num]]:
+            l[temp_max_num] = list(range(self.steer_val[num[temp_max_num]],val[temp_max_num],-10))
+            l[temp_max_num].append(val[temp_max_num])
+        elif val[temp_max_num] > self.steer_val[num[temp_max_num]]:
+            l[temp_max_num] = list(range(self.steer_val[num[temp_max_num]],val[temp_max_num],10))
+            l[temp_max_num].append(val[temp_max_num])
+        else:
+            l[temp_max_num].append(val[temp_max_num])
+        for i in range(0,3):
+            if i != temp_max_num:
+                temp_1 = int((abs(val[i]-self.steer_val[num[i]]))/len(l[temp_max_num]))
+                print(temp_1)
+                if val[i] < self.steer_val[num[i]]:
+                    if temp_1 != 0:
+                        l[i] = list(range(self.steer_val[num[i]],val[i],-temp_1))
+                    l[i].append(val[i])
+                elif val[i] > self.steer_val[num[i]]:
+                    if((val[i] != self.steer_val[num[i]]) and (temp_1 != 0)):
+                        l[i] = list(range(self.steer_val[num[i]],val[i],temp_1))
+                if(val[i] != self.steer_val[num[i]]):
+                    for j in range(len(l[i])-1,len(l[temp_max_num])-2,-1):
+                        l[i].pop(j)
+                    l[i].append(val[i])
+                    if len(l[i]) < len(l[temp_max_num]):
+                        for j in range(len(l[i]),len(l[temp_max_num]),1):
+                            l[i].append(val[i])
+                else:
+                    l[i] = []
+                    l[i].append(val[i])
+        print(len(l[0]),len(l[1]),len(l[2]))
+        print(val)
+        for i in range(0,len(l[temp_max_num])):
+            #print(l[0])
+            for k in range(0,3):
+                if(val[k] != self.steer_val[num[k]]):
+                    self.spi_com.steer(num[k],l[k][i])
+            time.sleep(time_val * self.steer_speed)
+        for i in range(0,3):
+            self.steer_val[num[i]] = val[i]
+        print(l)
+        print(len(l[temp_max_num]),len(l[1]))
+       
     def set_steer_time_4(self,num_1,val_1,num_2,val_2,num_3,val_3,num_4,val_4):
         pass
 

@@ -39,7 +39,7 @@ def run_fun():
     g_speed_set = speed_setH
     time_last = 0
     print("速度设置高速:%d,中速:%d,低速:%d"%(speed_setH,speed_setM,speed_setL))
-    
+    print("speed_ratio_B:%d"%speed_ratio_B)
     while True:
         gray_data = spi_fun.get_gray()      #获取寻线传感器的数据
         gray_data_two = spi_fun.get_gray_two()      #获取侧面传感器的数据
@@ -52,6 +52,8 @@ def run_fun():
                 dif = run.gray_dif(gray_data,1)         #全白时，偏移向左
             elif speed_set_status == 3:
                 dif = run.gray_dif(gray_data,2)         #全白时，偏移向右
+            else:
+                dif = run.gray_dif(gray_data,0)         #全白时，偏移量为0
             turn_out = run.turn_pid(dif)
             if speed_set_status != 4:
                 spi_fun.set_motor_left(int(g_speed_set+turn_out*speed_ratio_S))
@@ -106,7 +108,21 @@ while True:
                         count = count + 1
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
-            time.sleep(5)
+            
+            print("STEP:"+str("扫第一个物料"))
+            spi_fun.set_steer_time_3(2,500,3,-400,4,-530,20)
+            spi_fun.set_steer_time_1(1,0,10)
+
+            print("STEP:"+str("抓第一个物料"))
+            spi_fun.set_steer_time_3(2,450,3,-430,4,-1000,30)
+            spi_fun.set_steer_time_1(6,200,5)
+            
+            spi_fun.set_steer_time_3(2,550,3,-250,4,-800,20)
+            
+            spi_fun.set_steer_time_3(1,250,2,-100,3,1000,20)
+            spi_fun.set_steer_time_1(4,1000,10)
+            time.sleep(2)
+            spi_fun.set_steer_time_1(6,1000,5)
 
             print("STEP:"+str("第二个抓取点"))
             g_speed_set = speed_setL
@@ -122,7 +138,8 @@ while True:
             g_speed_set = speed_setL
             speed_set_status = 4
             count = 0    
-            while(not((gray_data_two[5] == 1) and (not(gray_data_two[6])) and count == 2)):
+            time.sleep(1)
+            while(not((gray_data_two[5] == 1) or (not(gray_data_two[6])))):
                 count = 0
                 for i in gray_data_two:
                     if(i == 1):
@@ -136,11 +153,38 @@ while True:
             print("STEP:"+str("第四个抓取点"))
             g_speed_set = speed_setL
             speed_set_status = 4
-            while(not((gray_data_two[10] == 1) and (gray_data_two[11] == 1))):
-                pass
+            time.sleep(0.5)
+            while(not((gray_data_two[4]) and (gray_data_two[5]))):
+                count = 0
+                for i in gray_data_two:
+                    if(i == 1):
+                        count = count + 1
+
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
+            time.sleep(5)
+
+            print("STEP:"+str("第五个抓取点"))
+            g_speed_set = speed_setL
+            speed_set_status = 0
+            spi_fun.set_motor(int(speed_setL))
+            spi_fun.set_steer_turn(0)
+            time.sleep(0.5)
+            while(not((gray_data_two[11]) and (gray_data_two[10]) and (count == 2))):
+                count = 0
+                for i in gray_data_two:
+                    if(i == 1):
+                        count = count + 1
+
+            speed_set_status = 0
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(5)
+            
+            print("STEP:"+str("下坡"))
+            g_speed_set = speed_setM
+            speed_set_status = 1
             time.sleep(5)
 
             while True:

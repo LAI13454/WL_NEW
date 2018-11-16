@@ -20,7 +20,7 @@ while True:
         for i in range(1,7):
             str_info = steer_fun.get_steer_val(i)
             print(str(i)+"的当前值:"+str(str_info))
-    if(temp == 20):
+    elif(temp == 20):
         temp_num = []
         temp_val = []
         for i in range(0,2):
@@ -40,7 +40,29 @@ while True:
             temp_val.append(temp_2)
 
         steer_fun.set_steer_time_2(temp_num[0],temp_val[0],temp_num[1],temp_val[1],speed)
-        #steer_fun.set_steer_time_2(5,1000,6,1000,10)
+        continue
+    elif(temp == 30):
+        temp_num = []
+        temp_val = []
+        for i in range(0,3):
+            temp_2 = input("控制机械臂位号"+str(i)+":")
+            try:
+                temp_2 = int(temp_2)
+            except ValueError:
+                print("请重试")
+                continue
+            temp_num.append(temp_2)
+            temp_2 = input("请输入设定值"+str(i)+":")
+            try:
+                temp_2 = int(temp_2)
+            except ValueError:
+                print("请重试")
+                continue
+            temp_val.append(temp_2)
+
+        steer_fun.set_steer_time_3(temp_num[0],temp_val[0],temp_num[1],temp_val[1],temp_num[2],temp_val[2],speed)
+        continue
+
     elif((temp >= 1) and (temp <= 6)):
         str_info = steer_fun.get_steer_val(temp)
         print(str(temp)+"的当前值:"+str(str_info))

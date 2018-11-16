@@ -6,7 +6,9 @@ class SPI_COM:      #树莓派与STM32通信类
         self.spi.open(0,0)
         self.spi.max_speed_hz = 1000000
         pass
-    def motor(self,direction,val):      #direction == 5:左右电机控制 1:左侧电机 2:右侧电机
+    def motor(self,direction,val):      #direction == 5:左右电机控制 1:左侧电机 2:右侧电机i
+        
+        #print("Test:"+str(direction)+"val:"+str(val))
         if((direction != 5) and (direction != 1) and (direction != 2)):
             while True:
                 print("电机设置错误")
@@ -73,6 +75,7 @@ class SPI_COM:      #树莓派与STM32通信类
         #print(l)
         #print(r_l)
     def steer_turn(self,val):
+        #print("Test:"+str(val))
         if val <= 0:
             #Left Turn
             if val <= -650:
@@ -82,7 +85,7 @@ class SPI_COM:      #树莓派与STM32通信类
             if val <= -650:
                 self.steer(7,-650) #right
             else:
-                self.steer(7,val)
+                self.steer(7,val-35)
         else:
             #Right Turn
             if val > 550:
@@ -92,7 +95,7 @@ class SPI_COM:      #树莓派与STM32通信类
             if val > 550:
                 self.steer(7,550)
             else:
-                self.steer(7,val)
+                self.steer(7,val-35)
     def gray(self):
         l = []
         l.append(0xaa)

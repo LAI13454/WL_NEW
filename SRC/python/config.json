@@ -5,11 +5,11 @@
 		"D":40
 	},
 	"Speed":{
-		"SetH":700,
+		"SetH":600,
 		"SetM":300,
 		"SetL":200,
 		"Ratio_S":0.8,
-		"Ratio_B":8,
+		"Ratio_B":2,
 		"Speed_L":200
 	},
 	"Steer":{
