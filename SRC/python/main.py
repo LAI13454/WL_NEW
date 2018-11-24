@@ -113,13 +113,14 @@ while True:
             spi_fun.set_steer_time_3(2,500,3,-400,4,-530,20)
             spi_fun.set_steer_time_1(1,0,10)
 
+            spi_fun.set_steer_time_1(6,1000,10)
             print("STEP:"+str("抓第一个物料"))
-            spi_fun.set_steer_time_3(2,450,3,-430,4,-1000,30)
+            spi_fun.set_steer_time_3(2,400,3,-1000,4,-1000,30)
+            
             spi_fun.set_steer_time_1(6,200,5)
+            spi_fun.set_steer_time_3(2,500,3,-900,4,-900,20)
             
-            spi_fun.set_steer_time_3(2,550,3,-250,4,-800,20)
-            
-            spi_fun.set_steer_time_3(1,250,2,-100,3,1000,20)
+            spi_fun.set_steer_time_3(1,250,2,-100,3,400,20)
             spi_fun.set_steer_time_1(4,1000,10)
             time.sleep(2)
             spi_fun.set_steer_time_1(6,1000,5)
@@ -134,6 +135,20 @@ while True:
             spi_fun.set_steer_turn(0)
             time.sleep(5)
             
+            spi_fun.set_steer_time_3(2,500,3,-400,4,-530,20)
+            spi_fun.set_steer_time_1(1,0,10)
+
+
+            spi_fun.set_steer_time_3(2,400,3,-1000,4,-1000,20)
+            spi_fun.set_steer_time_1(6,200,5)
+            time.sleep(2)
+
+            spi_fun.set_steer_time_3(2,500,3,-900,4,-900,20)
+
+            spi_fun.set_steer_time_3(1,-50,2,-150,3,500,20)
+            spi_fun.set_steer_time_1(4,900,10)
+            time.sleep(2)
+            spi_fun.set_steer_time_1(6,1000,5)
             print("STEP:"+str("第三个抓取点"))
             g_speed_set = speed_setL
             speed_set_status = 4
@@ -149,7 +164,21 @@ while True:
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
             time.sleep(5)
-            
+
+            spi_fun.set_steer_time_3(2,500,3,-400,4,-530,20)
+            spi_fun.set_steer_time_1(1,0,10)
+
+
+            spi_fun.set_steer_time_3(2,400,3,-1000,4,-1000,20)
+            spi_fun.set_steer_time_1(6,200,5)
+
+            spi_fun.set_steer_time_3(2,500,3,-900,4,-900,20)
+
+            spi_fun.set_steer_time_3(1,-350,2,-150,3,500,20)
+            spi_fun.set_steer_time_1(4,1000,10)
+            time.sleep(2)
+            spi_fun.set_steer_time_1(6,1000,5)
+
             print("STEP:"+str("第四个抓取点"))
             g_speed_set = speed_setL
             speed_set_status = 4
