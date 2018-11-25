@@ -7,8 +7,10 @@ class SPI_FUN:
         f = open("config.json",encoding='utf-8')
         setting = json.load(f)
         self.steer_val = []
+        self.steer_val_def = []
         for i in range(0,7):
             self.steer_val.append(0)
+            self.steer_val_def.append(0)
         print(self.steer_val)
         if val == 0:
             self.steer_val[1] = setting["Steer_DEF"]["1"]
@@ -18,11 +20,16 @@ class SPI_FUN:
             self.steer_val[5] = setting["Steer_DEF"]["5"]
             self.steer_val[6] = setting["Steer_DEF"]["6"]
             self.steer_speed = setting["Steer_DEF"]["Speed"]
+            for i in range(1,7):
+                self.steer_val_def[i] = self.steer_val[i]
         else:
             pass
         for i in range(1,6):
             self.spi_com.steer(i,self.steer_val[i])
         print(self.steer_val)
+    def steer_init(self):
+        self.set_steer_time_3(2,self.steer_val_def[2],3,self.steer_val_def[3],4,self.steer_val_def[4],20) 
+        self.set_steer_time_1(1,self.steer_val_def[1],10)
     def get_gray(self):             #获取寻线灰度数据
         return self.spi_com.gray()
     def get_gray_two(self):
@@ -35,6 +42,9 @@ class SPI_FUN:
         self.spi_com.motor(2,val)           #设置右侧电机值
     def set_motor(self,val):
         self.spi_com.motor(5,val)           #设置两个电机值
+        if val == 0:
+            time.sleep(0.02)
+            self.spi_com.motor(5,val)
     def get_steer_val(self,num_1):
         return self.steer_val[num_1]
     def set_steer_time_1(self,num_1,val_1,time_val):     

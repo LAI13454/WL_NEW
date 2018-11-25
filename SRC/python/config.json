@@ -2,13 +2,13 @@
 	"PID_turn":{
 		"P":80,
 		"I":0,
-		"D":40
+		"D":0
 	},
 	"Speed":{
 		"SetH":600,
 		"SetM":300,
 		"SetL":200,
-		"Ratio_S":0.8,
+		"Ratio_S":0.5,
 		"Ratio_B":2,
 		"Speed_L":200
 	},
