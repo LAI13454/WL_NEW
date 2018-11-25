@@ -22,6 +22,7 @@ speed_setM = 0
 speed_setL = 0
 
 goods_data = ["ZJGXDS06","ZJGXDS08","ZJGXDS09"]
+goods_place_data = [0,0,0,0,0]
 goods_place_count = 1
 
 def run_fun():
@@ -115,23 +116,41 @@ def steer_catch_place():        #放物料到物料架
 
 def steer_place_code_bottom():
     spi_fun.set_steer_time_3(2,750,3,-700,4,-260,20)
-    spi_fun.set_steer_time_3(5,900,1,0,6,1000,20)
+    spi_fun.set_steer_time_3(5,900,1,50,6,1000,20)
 def steer_place_code_top():
     spi_fun.set_steer_time_3(2,500,3,-700,4,320,20)
-    spi_fun.set_steer_time_3(5,900,1,-50,6,1000,20)
+    spi_fun.set_steer_time_3(5,900,1,50,6,1000,20)
 def steer_place_catch_m1():
+    steer_place_code_bottom()
     spi_fun.set_steer_time_3(1,250,2,200,3,50,20)
     spi_fun.set_steer_time_1(4,650,10)
     spi_fun.set_steer_time_1(6,200,10)
-    spi_fun.set_steer_time_1(2,100,10)
+    spi_fun.set_steer_time_1(2,0,10)
+    spi_fun.set_steer_time_1(5,-400,10)
+def steer_place_catch_m2():
+    steer_place_code_bottom()
+    spi_fun.set_steer_time_3(1,-40,2,100,3,270,20)
+    spi_fun.set_steer_time_1(4,500,10)
+    spi_fun.set_steer_time_1(6,200,10)
+    spi_fun.set_steer_time_1(2,-100,10)
+    spi_fun.set_steer_time_1(5,-400,10)
+def steer_place_catch_m3():
+    steer_place_code_bottom()
+    spi_fun.set_steer_time_1(1,-380,10)
+    spi_fun.set_steer_time_2(2,-100,3,550,20)
+    spi_fun.set_steer_time_1(4,400,20)
+    spi_fun.set_steer_time_1(6,200,10)
+    spi_fun.set_steer_time_1(2,-300,10)
+    spi_fun.set_steer_time_1(5,-400,10)
+
 def steer_place_goods_bottom():
-    spi_fun.set_steer_time_3(2,800,3,-500,4,-900,20)
+    spi_fun.set_steer_time_3(2,800,3,-500,4,-850,20)
     spi_fun.set_steer_time_1(1,0,10)
     spi_fun.set_steer_time_2(2,400,3,-250,20)
     spi_fun.set_steer_time_1(6,1000,10)
     spi_fun.set_steer_time_3(2,800,3,-500,4,-850,20)
 def steer_place_goods_top():
-    spi_fun.set_steer_time_3(2,500,3,0,4,-900,20)
+    spi_fun.set_steer_time_3(2,500,3,0,4,-850,20)
     spi_fun.set_steer_time_1(1,0,10)
     spi_fun.set_steer_time_1(2,300,10)
     spi_fun.set_steer_time_1(4,-850,10)
@@ -149,7 +168,7 @@ time.sleep(1)
 while True:
     try:
         while True:             #当走到终点时退出循环
-            """print("STEP:"+str("直线行驶"))
+            print("STEP:"+str("直线行驶"))
             speed_set_status = 0    #关闭PID寻线控制
             print(speed_setM)
             spi_fun.set_motor(speed_setM)         
@@ -183,6 +202,7 @@ while True:
             for i in goods_data:
                 if(code_temp == i):
                     print("STEP:"+str("抓第一个物料"))
+                    goods_place_data[goods_place_count] = i 
                     steer_catch_goods()
                     steer_catch_place()
                     break
@@ -202,6 +222,7 @@ while True:
             for i in goods_data:
                 if(code_temp == i):
                     print("STEP:"+str("抓第二个物料"))
+                    goods_place_data[goods_place_count] = i 
                     steer_catch_goods()
                     steer_catch_place()
                     break
@@ -226,6 +247,7 @@ while True:
             for i in goods_data:
                 if(code_temp == i):
                     print("STEP:"+str("抓第三个物料"))
+                    goods_place_data[goods_place_count] = i 
                     steer_catch_goods()
                     steer_catch_place()
                     break
@@ -250,6 +272,7 @@ while True:
                 for i in goods_data:
                     if(code_temp == i):
                         print("STEP:"+str("抓第四个物料"))
+                        goods_place_data[goods_place_count] = i 
                         steer_catch_goods()
                         steer_catch_place()
                         break
@@ -277,18 +300,18 @@ while True:
                 for i in goods_data:
                     if(code_temp == i):
                         print("STEP:"+str("抓第五个物料"))
+                        goods_place_data[goods_place_count] = i 
                         steer_catch_goods()
                         steer_catch_place()
                         break
 
-"""
             spi_fun.steer_init()
             
             print("STEP:"+str("下坡"))
             g_speed_set = speed_setM
             speed_set_status = 2
 
-            #time.sleep(5)
+            time.sleep(5)
             
             while(not((gray_data_two[1] and gray_data_two[2]) and (gray_data_two[9] and gray_data_two[10]) and (not(gray_data_two[4] or gray_data_two[6] or gray_data_two[5])))):
                 pass
@@ -310,45 +333,107 @@ while True:
             spi_fun.set_steer_turn(0)
             steer_place_code_bottom()
             code_temp = code_fun()
+            print(goods_place_data)
             count_temp = 0
+            count_temp_1 = 0
             for i in goods_data:
                 count_temp = count_temp + 1
                 if(code_temp == i):
                     print("STEP:"+str("放第一个物料"))
-                    steer_place_catch_m1()
+                    for j in goods_place_data :
+                        count_temp_1 = count_temp_1 + 1
+                        if code_temp == j:
+                            break
+                    if count_temp_1 == 2:
+                        steer_place_catch_m1()
+                    elif count_temp_1 == 3:
+                        steer_place_catch_m2()
+                    elif count_temp_1 == 4:
+                        steer_place_catch_m3()
                     steer_place_goods_bottom()
                     break
-            if count_temp == 3:
-                steer_place_code_top()
-                code_temp = code_fun()
-                count_temp = 0
-                for i in goods_data:
-                    count_temp = count_temp + 1
-                    if(code_temp == i):
-                        print("STEP:"+str("放第一个物料"))
+            steer_place_code_top()
+            code_temp = code_fun()
+            print(goods_place_data)
+            count_temp = 0
+            count_temp_1 = 0
+            for i in goods_data:
+                count_temp = count_temp + 1
+                if(code_temp == i):
+                    print("STEP:"+str("放第一个物料"))
+                    for j in goods_place_data :
+                        count_temp_1 = count_temp_1 + 1
+                        if code_temp == j:
+                            break
+                    if count_temp_1 == 2:
                         steer_place_catch_m1()
-                        steer_place_goods_top()
-
-                        break
-
+                    elif count_temp_1 == 3:
+                        steer_place_catch_m2()
+                    elif count_temp_1 == 4:
+                        steer_place_catch_m3()
+                    steer_place_goods_top()
+                    break
 
             
             print("STEP:"+str("第二个抓取点"))
             g_speed_set = speed_setL
             speed_set_status = 4
-            while(not((gray_data_two[6] == 1) and (gray_data_two[7] == 1))):
+            while(not((gray_data_two[7] == 1) and (gray_data_two[8] == 1))):
                 pass
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
-            time.sleep(5)
+            steer_place_code_bottom()
+            code_temp = code_fun()
+            print(goods_place_data)
+            count_temp = 0
+            count_temp_1 = 0
+            for i in goods_data:
+                count_temp = count_temp + 1
+                if(code_temp == i):
+                    print("STEP:"+str("放第一个物料"))
+                    for j in goods_place_data :
+                        count_temp_1 = count_temp_1 + 1
+                        if code_temp == j:
+                            break
+                    if count_temp_1 == 2:
+                        steer_place_catch_m1()
+                    elif count_temp_1 == 3:
+                        steer_place_catch_m2()
+                    elif count_temp_1 == 4:
+                        steer_place_catch_m3()
+                    steer_place_goods_bottom()
+                    break
+            steer_place_code_top()
+            code_temp = code_fun()
+            print(goods_place_data)
+            count_temp = 0
+            count_temp_1 = 0
+            for i in goods_data:
+                count_temp = count_temp + 1
+                if(code_temp == i):
+                    print("STEP:"+str("放第一个物料"))
+                    for j in goods_place_data :
+                        count_temp_1 = count_temp_1 + 1
+                        if code_temp == j:
+                            break
+                    if count_temp_1 == 2:
+                        steer_place_catch_m1()
+                    elif count_temp_1 == 3:
+                        steer_place_catch_m2()
+                    elif count_temp_1 == 4:
+                        steer_place_catch_m3()
+                    steer_place_goods_top()
+                    break
+
+
 
             print("STEP:"+str("第三个抓取点"))
             g_speed_set = speed_setL
             speed_set_status = 4
             count = 0    
             time.sleep(1)
-            while(not((gray_data_two[5] == 1) or (not(gray_data_two[6])))):
+            while(not((gray_data_two[6] == 1) or (not(gray_data_two[7])))):
                 count = 0
                 for i in gray_data_two:
                     if(i == 1):
@@ -363,7 +448,7 @@ while True:
             g_speed_set = speed_setL
             speed_set_status = 4
             time.sleep(0.5)
-            while(not((gray_data_two[4]) and (gray_data_two[5]))):
+            while(not((gray_data_two[5]) and (gray_data_two[6]))):
                 count = 0
                 for i in gray_data_two:
                     if(i == 1):
@@ -380,7 +465,7 @@ while True:
             spi_fun.set_motor(int(speed_setL))
             spi_fun.set_steer_turn(0)
             time.sleep(0.5)
-            while(not((gray_data_two[11]) and (gray_data_two[10]) and (count == 2))):
+            while(not((gray_data_two[11])  and (count == 1))):
                 count = 0
                 for i in gray_data_two:
                     if(i == 1):
