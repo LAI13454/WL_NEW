@@ -1,0 +1,16 @@
+[Unit]
+Description=wl
+After=rc-local.service
+
+[Service]
+Type=simple
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/WL_NEW/SRC/python
+ExecStart=/usr/bin/python3 main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+

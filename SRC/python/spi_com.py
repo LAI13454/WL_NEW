@@ -165,6 +165,40 @@ class SPI_COM:      #树莓派与STM32通信类
         val.reverse()
         #print(val)
         return val
+    def get_other(self):
+        l = []
+        l.append(0xaa)
+        l.append(0x70)
+        l.append(0x00)
+        l.append(0x00)
+        l.append(0xff)
+        l.append(0xff)
+        temp = 0
+        for i in range(6):
+            temp = temp + l[i]
+        l.append(temp&0xff)         #检验位
+        l.append(0x55)
+        while_flag = True
+        while while_flag:
+            r_l = self.spi.xfer(l)
+            if(((r_l[4] + r_l[5]) & 0xff) != r_l[6]):
+                #print(l)
+                #print(r_l)
+                #print("SPI通信错误")
+                while_flag = True
+            else:
+                while_flag = False
+        temp = 1
+        temp = r_l[4]
+        print(temp) 
+        #print(l)
+        #print(r_l)
+        #print(val)
+        return temp
 
-#spi_com = SPI_COM()
-#spi_com.motor(5,200)
+    def get_red(self):
+        return self.get_other()&0x01
+
+"""spi_com = SPI_COM()
+while True:
+    spi_com.get_red()"""

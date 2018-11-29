@@ -7,7 +7,7 @@ class RUN:
         self.KP = setting["PID_turn"]["P"]
         self.KI = setting["PID_turn"]["I"]
         self.KD = setting["PID_turn"]["D"]
-    def gray_dif(self,gray,status=0):     #status = 0 当白色时，偏移量为0，status = 1，偏移量使其左转，status = 2，偏移量使其右转
+    def gray_dif(self,gray,status=0):     #status = 0 当白色时，偏移量为0，status = 1，偏移量使其左转，status = 2，偏移量使其右转,status = 3,解决上坡扭动
         left = 0        #左边第一个黑点位置
         right = 0       #右边第一个黑点位置
         l1 = list(range(12))
@@ -24,13 +24,14 @@ class RUN:
                 break
         if((left == 0) and (right == 0)):
             if status == 1:
-                right = 15
+                right = 9
             elif status == 2:
-                left == 15
-        elif left == 0:
-            left = right
-        elif right == 0:
-            right = left
+                left == 9
+        if status == 0:
+            if left == 0:
+                left = right
+            elif right == 0:
+                right = left
         #print(left,right)
         return (left - right)
     def turn_pid(self,dif):
