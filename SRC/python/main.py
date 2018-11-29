@@ -28,8 +28,8 @@ speed_setH = 0
 speed_setM = 0
 speed_setL = 0
 
-goods_data = ["ZJGXDS06","ZJGXDS08","ZJGXDS09"]
-goods_place_info = ["ZJGXDS05","ZJGXDS10","ZJGXDS04","ZJGXDS09","ZJGXDS03","ZJGXDS08","ZJGXDS02","ZJGXDS07","ZJGXDS01","ZJGXDS06"]
+goods_data = ["ZJGXDS02","ZJGXDS03","ZJGXDS04"]
+goods_place_info = ["ZJGXDS10","ZJGXDS05","ZJGXDS09","ZJGXDS04","ZJGXDS08","ZJGXDS03","ZJGXDS07","ZJGXDS02","ZJGXDS06","ZJGXDS01"]
 goods_place_data = [0,0,0,0,0]
 goods_place_count = 1
 
@@ -155,7 +155,7 @@ def steer_catch_place_m1():     #放到右侧第一个载物台
     spi_fun.set_steer_time_1(4,0,20)
     spi_fun.set_steer_time_1(6,1000,5)
 def steer_catch_place_m2():     #放到右侧第二个载物台
-    spi_fun.set_steer_time_3(1,-50,2,-250,3,1000,20)
+    spi_fun.set_steer_time_3(1,-50,2,-200,3,1000,20)
     spi_fun.set_steer_time_1(5,-400,5)
     spi_fun.set_steer_time_1(4,-300,20)
     spi_fun.set_steer_time_1(6,1000,5)
@@ -460,8 +460,8 @@ while True:
                         count = count + 1
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
-            steer_place_code_bottom()
-            code_temp = code_fun()
+            #steer_place_code_bottom()
+            code_temp = goods_place_info[0] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -481,8 +481,8 @@ while True:
                         steer_place_catch_m3()
                     steer_place_goods_bottom()
                     break
-            steer_place_code_top()
-            code_temp = code_fun()
+            #steer_place_code_top()
+            code_temp = goods_place_info[1] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -512,8 +512,8 @@ while True:
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
-            steer_place_code_bottom()
-            code_temp = code_fun()
+            #steer_place_code_bottom()
+            code_temp = goods_place_info[2] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -533,8 +533,8 @@ while True:
                         steer_place_catch_m3()
                     steer_place_goods_bottom()
                     break
-            steer_place_code_top()
-            code_temp = code_fun()
+            #steer_place_code_top()
+            code_temp = goods_place_info[3] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -571,8 +571,8 @@ while True:
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0) 
-            steer_place_code_bottom()
-            code_temp = code_fun()
+            #steer_place_code_bottom()
+            code_temp = goods_place_info[4] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -592,8 +592,8 @@ while True:
                         steer_place_catch_m3()
                     steer_place_goods_bottom()
                     break
-            steer_place_code_top()
-            code_temp = code_fun()
+            #steer_place_code_top()
+            code_temp = goods_place_info[5] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -628,8 +628,8 @@ while True:
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
-            steer_place_code_bottom()
-            code_temp = code_fun()
+            #steer_place_code_bottom()
+            code_temp = goods_place_info[6] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -649,8 +649,8 @@ while True:
                         steer_place_catch_m3()
                     steer_place_goods_bottom()
                     break
-            steer_place_code_top()
-            code_temp = code_fun()
+            #steer_place_code_top()
+            code_temp = goods_place_info[7] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -687,8 +687,8 @@ while True:
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
-            steer_place_code_bottom()
-            code_temp = code_fun()
+            #steer_place_code_bottom()
+            code_temp = goods_place_info[8] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -708,8 +708,8 @@ while True:
                         steer_place_catch_m3()
                     steer_place_goods_bottom()
                     break
-            steer_place_code_top()
-            code_temp = code_fun()
+            #steer_place_code_top()
+            code_temp = goods_place_info[9] 
             print(goods_place_data)
             count_temp = 0
             count_temp_1 = 0
@@ -730,9 +730,7 @@ while True:
                     steer_place_goods_top()
                     break
 
-
-            while True:
-                pass
+            spi_fun.steer_init()
     except KeyboardInterrupt:
         speed_set_status = 0
         spi_fun.set_steer_turn(0)
