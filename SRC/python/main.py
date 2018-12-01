@@ -28,7 +28,7 @@ speed_setH = 0
 speed_setM = 0
 speed_setL = 0
 
-goods_data = ["ZJGXDS02","ZJGXDS03","ZJGXDS04"]
+goods_data = ["ZJGXDS01","ZJGXDS03","ZJGXDS04","ZJGXDS06","ZJGXDS07","ZJGXDS09"]
 goods_place_info = ["ZJGXDS10","ZJGXDS05","ZJGXDS09","ZJGXDS04","ZJGXDS08","ZJGXDS03","ZJGXDS07","ZJGXDS02","ZJGXDS06","ZJGXDS01"]
 goods_place_data = [0,0,0,0,0]
 goods_place_count = 1
@@ -142,25 +142,30 @@ def steer_catch_code():         #抓物料前扫码
     spi_fun.set_steer_time_1(1,0,10)
     spi_fun.set_steer_time_1(6,1000,10)
     spi_fun.set_steer_time_1(5,900,5)
+    spi_fun.set_steer_time_1(2,550,5)
     camera_data = None
 
 def steer_catch_goods():        #从取物台抓物料
     spi_fun.set_steer_time_3(2,470,3,-440,4,-830,30)
-    spi_fun.set_steer_time_1(6,200,5)
+    spi_fun.set_steer_time_1(2,420,10)
+    spi_fun.set_steer_time_1(6,100,5)
     spi_fun.set_steer_time_3(2,550,3,-400,4,-750,20)
     #spi_fun.set_steer_time_3(2,500,3,-900,4,-900,20)
 def steer_catch_place_m1():     #放到右侧第一个载物台
+    print("放到右侧第一个")
     spi_fun.set_steer_time_3(1,250,2,-200,3,800,20)
     spi_fun.set_steer_time_1(5,-400,5)
     spi_fun.set_steer_time_1(4,0,20)
     spi_fun.set_steer_time_1(6,1000,5)
 def steer_catch_place_m2():     #放到右侧第二个载物台
+    print("放到右侧第二个")
     spi_fun.set_steer_time_3(1,-50,2,-200,3,1000,20)
     spi_fun.set_steer_time_1(5,-400,5)
     spi_fun.set_steer_time_1(4,-300,20)
     spi_fun.set_steer_time_1(6,1000,5)
 
 def steer_catch_place_m3():     #放到右侧第三个载物台
+    print("放到右侧第三个")
     spi_fun.set_steer_time_3(1,-380,2,-250,3,800,20)
     spi_fun.set_steer_time_1(5,-400,5)
     spi_fun.set_steer_time_1(4,0,20)
@@ -179,42 +184,48 @@ def steer_catch_place():        #放物料到物料架
     goods_place_count = goods_place_count + 1
 
 def steer_place_code_bottom():
+    print("放下层物料")
     spi_fun.set_steer_time_3(2,750,3,-700,4,-260,20)
     spi_fun.set_steer_time_3(5,900,1,50,6,1000,20)
 def steer_place_code_top():
+    print("放上层物料")
     spi_fun.set_steer_time_3(2,500,3,-700,4,320,20)
     spi_fun.set_steer_time_3(5,900,1,50,6,1000,20)
 def steer_place_catch_m1():
     steer_place_code_bottom()
-    spi_fun.set_steer_time_3(1,250,2,200,3,50,20)
+    print("抓第一个" )
+    spi_fun.set_steer_time_1(1,250,10)
+    spi_fun.set_steer_time_2(2,200,3,50,20)
     spi_fun.set_steer_time_1(4,650,10)
-    spi_fun.set_steer_time_1(6,200,10)
+    spi_fun.set_steer_time_1(6,100,10)
     spi_fun.set_steer_time_1(2,0,10)
     spi_fun.set_steer_time_1(5,-400,10)
 def steer_place_catch_m2():
     steer_place_code_bottom()
     spi_fun.set_steer_time_3(1,-40,2,100,3,270,20)
     spi_fun.set_steer_time_1(4,500,10)
-    spi_fun.set_steer_time_1(6,200,10)
+    spi_fun.set_steer_time_1(6,100,10)
     spi_fun.set_steer_time_1(2,-100,10)
     spi_fun.set_steer_time_1(5,-400,10)
 def steer_place_catch_m3():
     steer_place_code_bottom()
+    print("抓第三个")
     spi_fun.set_steer_time_1(1,-380,10)
     spi_fun.set_steer_time_2(2,-100,3,550,20)
     spi_fun.set_steer_time_1(4,400,20)
-    spi_fun.set_steer_time_1(6,200,10)
+    spi_fun.set_steer_time_1(6,100,10)
     spi_fun.set_steer_time_1(2,-300,10)
     spi_fun.set_steer_time_1(5,-400,10)
 
 def steer_place_goods_bottom():
-    spi_fun.set_steer_time_3(2,800,3,-500,4,-850,20)
+    spi_fun.set_steer_time_3(2,800,3,-500,4,-868,20)
     spi_fun.set_steer_time_1(1,0,10)
-    spi_fun.set_steer_time_2(2,400,3,-250,20)
+    spi_fun.set_steer_time_2(2,400,3,-500,20)
     spi_fun.set_steer_time_1(6,1000,10)
-    spi_fun.set_steer_time_3(2,800,3,-500,4,-850,20)
+    spi_fun.set_steer_time_3(2,800,3,-500,4,-850,20)      #-850
+    spi_fun.set_steer_time_1(1,-700,10)
 def steer_place_goods_top():
-    spi_fun.set_steer_time_3(2,500,3,0,4,-850,20)
+    spi_fun.set_steer_time_3(2,500,3,0,4,-868,20)
     spi_fun.set_steer_time_1(1,0,10)
     spi_fun.set_steer_time_1(2,300,10)
     spi_fun.set_steer_time_1(4,-850,10)
@@ -243,9 +254,9 @@ while True:
             print(speed_setM)
             spi_fun.set_motor(speed_setM)         
             spi_fun.set_steer_turn(0)
-            time.sleep(1)
-            speed_set_status = 2    #切换到第二种寻线模式
-
+            time.sleep(2)
+            speed_set_status = 4    #切换到第二种寻线模式
+        
             print("STEP:"+str("上坡第一次停车准备"))
             while(not((gray_data_two[1] and gray_data_two[2]) and (gray_data_two[9] and gray_data_two[10]) and (not(gray_data_two[4] or gray_data_two[6] or gray_data_two[5])))):
                 pass
@@ -393,6 +404,8 @@ while True:
                 spi_fun.set_steer_turn(0)
                 print("STEP:"+str("扫第五个物料"))
                 steer_catch_code()
+                spi_fun.set_steer_time_1(1,-50,5)
+                #spi_fun.set_steer_time_1(4,-580,5)
                 time_last = time.time()
                 while (time.time()-time_last) < 10:
                     code_temp = code_fun()
@@ -417,28 +430,60 @@ while True:
 
             time.sleep(5)
 
-            while spi_fun.get_red_data():
+            """while spi_fun.get_red_data():
                 pass
             while spi_fun.get_red_data():
-                pass 
-
-            print("STEP:"+str("避障"))
+                pass """
+    
+            """print("STEP:"+str("避障1"))
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0)
             time.sleep(0.5)
-            spi_fun.set_steer_turn(-500)
-            spi_fun.set_motor(300)
+            spi_fun.set_steer_turn(0)
+            spi_fun.set_motor_left(-400)
+            spi_fun.set_motor_right(400)
             time.sleep(2)
+            spi_fun.set_motor_left(400)
+            spi_fun.set_motor_right(400)
+            spi_fun.set_steer_turn(0)
+            time.sleep(2.5)
+            spi_fun.set_motor_left(400)
+            spi_fun.set_motor_right(-400)
             spi_fun.set_steer_turn(0)
             time.sleep(2)
+            spi_fun.set_motor_left(400)
+            spi_fun.set_motor_right(400)
+            spi_fun.set_steer_turn(300)"""
+        
+            """print("STEP:"+str("避障2"))
+            speed_set_status = 0
+            spi_fun.set_motor(0)
+            spi_fun.set_steer_turn(0)
+            time.sleep(0.5)
+            spi_fun.set_steer_turn(0)
+            spi_fun.set_motor_left(-400)
+            spi_fun.set_motor_right(400)
+            time.sleep(3)
+            spi_fun.set_motor_left(400)
+            spi_fun.set_motor_right(400)
+            spi_fun.set_steer_turn(0)
+            time.sleep(2.8)
+            spi_fun.set_motor_left(400)
+            spi_fun.set_motor_right(-400)
+            spi_fun.set_steer_turn(0)
+            time.sleep(2)
+            spi_fun.set_motor_left(400)
+            spi_fun.set_motor_right(400)
             spi_fun.set_steer_turn(300)
-            while(not(gray_data_two[5] and gray_data_two[6])):
+
+            while(not(gray_data_two[1] and gray_data_two[2])):
                 pass
-            g_speed_set = speed_setM
+            """
+            g_speed_set = speed_setH
             speed_set_status = 2
 
-
+            time.sleep(3)
             
 
             
@@ -494,6 +539,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -525,6 +571,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -546,6 +593,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -567,7 +615,7 @@ while True:
                 for i in gray_data_two:
                     if(i == 1):
                         count = count + 1
-
+            time.sleep(0.3)
             speed_set_status = 0
             spi_fun.set_motor(0)
             spi_fun.set_steer_turn(0) 
@@ -584,6 +632,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -605,6 +654,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -641,6 +691,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -700,6 +751,7 @@ while True:
                         count_temp_1 = count_temp_1 + 1
                         if code_temp == j:
                             break
+                    print(count_temp_1)
                     if count_temp_1 == 2:
                         steer_place_catch_m1()
                     elif count_temp_1 == 3:
@@ -729,8 +781,21 @@ while True:
                         steer_place_catch_m3()
                     steer_place_goods_top()
                     break
-
+            
             spi_fun.steer_init()
+            g_speed_set = speed_setH
+            speed_set_status = 2    #切换到第一种寻线模式
+            time.sleep(3.5)
+            speed_set_status = 0    #切换到第一种寻线模式
+            spi_fun.set_motor(speed_setH)
+            while(not((gray_data_two[10] or gray_data_two[11]))):
+                pass
+            time.sleep(0.4)
+            spi_fun.set_motor(0)
+    
+            while True:
+                time.sleep(2)
+
     except KeyboardInterrupt:
         speed_set_status = 0
         spi_fun.set_steer_turn(0)
